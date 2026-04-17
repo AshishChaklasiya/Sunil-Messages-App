@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Babiltitolo stilo</string>
+    <string name="unread_at_top_g">Lugemata alati ülaosas</string>
+    <string name="show_sim_selection_dialog">Montru dialogon pri elekto de SIM-karto dum sendado</string>
+    <string name="delete_after_copy">Forigu mesaĝon post kopiado de numero de sciigo</string>
+    <string name="sound_on_out_going_messages">Sono dum sendado de mesaĝo</string>
+    <string name="delivered">Liverita</string>
+    <string name="failed">Malsukcesis</string>
+    <string name="pending">Pritraktata</string>
+    <string name="message_type">Mesaĝo-tipo</string>
+    <string name="show_number_in_title">Montri numeron en la babileja kaplinio</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Rivelo pri Aliro al Datumoj</h2>
+
+<p><strong>Ĉi tiu aplikaĵo bezonas aliron al SMS-mesaĝoj kaj telefon-rilataj informoj por funkcii ĝuste.</strong></p>
+
+<h3>🔍 Kiujn Informojn Ni Aliras:</h3>
+<ul>
+<li><strong>SMS-MESAĜOJ:</strong> Plena enhavo de viaj SMS-mesaĝoj.</li>
+<li><strong>VIA(J) TELEFONNUMERO(J):</strong> La telefonnumero(j) asociita(j) kun la SIM-karto(j) de via aparato.</li>
+<li><strong>TELEFONNUMEROJ EL SMS:</strong> Telefonnumeroj enhavitaj en viaj SMS-mesaĝoj.</li>
+</ul>
+
+<h3>📱 Kiel Ni Uzas Ĉi Tiujn Informojn (LOKE SUR LA APARATO):</h3>
+<ul>
+<li><strong>VIA TELEFONNUMERO:</strong> Ni <strong>kolektas kaj uzas</strong> la telefonnumeron de via aparato <strong>nur por montri ĝin</strong> en la aplikaĵa interfaco por Elekto de SIM-karto. <em>Ĉi tiu numero estas prilaborata loke kaj ne transdonita.</em></li>
+<li><strong>TELEFONNUMEROJ EL SMS-MESAĜOJ:</strong> Ni <strong>eltiras telefonnumerojn</strong> el SMS-mesaĝoj por ebligi al vi facile kopii ilin. <em>Ĉi tiu eltiro okazas loke.</em></li>
+<li><strong>SMS-ENHAVO POR OTP:</strong> Ni <strong>analizas SMS-tekston</strong> por aŭtomate detekti kaj kopii OTP-kodojn al via tondejo. <em>Ĉi tiu analizo okazas loke.</em></li>
+</ul>
+
+<h3>🚫 Kion Ni NE Faras Kun Viaj Datumoj:</h3>
+<ul>
+<li><strong>Ni NE SENDAS aŭ ALŜUTAS</strong> viajn SMS-mesaĝojn, telefonnumerojn aŭ ajnan mesaĝan enhavon al iu ajn servilo.</li>
+<li><strong>Ni NE STOKAS</strong> viajn SMS-datumojn aŭ telefonnumerojn sur eksteraj serviloj.</li>
+<li><strong>Ni NE KUNHAVIGAS</strong> viajn personajn datumojn kun triaj partioj.</li>
+</ul>
+
+<h3>✅ Ĉefa Garantio:</h3>
+<p><strong>Ĉiu datumtraktado okazas ekskluzive sur via aparato (sur-aparata).</strong> Viaj SMS-mesaĝoj kaj telefonnumeroj neniam forlasas vian aparaton. Interreta aliro estas uzata nur por sendi MMS-ojn kaj prilabori aĉetojn de Google Play.</p>
+
+<h3>🔑 Klarigo pri Bezonataj Permesoj:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Por aliri SMS-ojn por OTP-kopiado kaj telefonnumera eltiro (nur loka prilaborado).</li>
+<li><strong>READ_PHONE_STATE:</strong> Por kolekti kaj montri la telefonnumeron de via aparato por SIM-elekto (nur loka uzo).</li>
+</ul>
+
+<p><em>Daŭrigante, vi agnoskas, ke:</em></p>
+<ol>
+<li>Ĉi tiu aplikaĵo kolektas la telefonnumeron de via aparato por loka montrado</li>
+<li>Ĉi tiu aplikaĵo aliras SMS-mesaĝojn por loka OTP kaj telefonnumera eltiro</li>
+<li>Neniu el ĉi tiuj datumoj estas transdonita de via aparato</li>
+</ol>
+]]></string>
+</resources>

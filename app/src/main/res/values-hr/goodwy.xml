@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Stil naslova chata</string>
+    <string name="unread_at_top_g">Nepročitano uvijek na vrhu</string>
+    <string name="show_sim_selection_dialog">Pokaži dijaloški okvir za odabir SIM kartice prilikom slanja</string>
+    <string name="delete_after_copy">Brisanje poruke nakon kopiranja broja iz obavijesti</string>
+    <string name="sound_on_out_going_messages">Zvuk prilikom slanja poruke</string>
+    <string name="delivered">Isporučeno</string>
+    <string name="failed">neuspješno</string>
+    <string name="pending">Na čekanju</string>
+    <string name="message_type">Vrsta poruke</string>
+    <string name="show_number_in_title">Prikaži broj u zaglavlju chata</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Objava o pristupu podacima</h2>
+
+<p><strong>Ovoj aplikaciji je potreban pristup SMS porukama i informacijama vezanim uz telefon kako bi ispravno funkcionirala.</strong></p>
+
+<h3>🔍 Kojim informacijama pristupamo:</h3>
+<ul>
+<li><strong>SMS PORUKE:</strong> Puni sadržaj vaših SMS poruka.</li>
+<li><strong>VAŠ BROJ(EVI) TELEFONA:</strong> Broj(evi) telefona povezan(i) sa SIM karticom(ama) vašeg uređaja.</li>
+<li><strong>BROJEVCI TELEFONA IZ SMS-a:</strong> Brojevi telefona sadržani u vašim SMS porukama.</li>
+</ul>
+
+<h3>📱 Kako koristimo ove informacije (LOKALNO NA UREĐAJU):</h3>
+<ul>
+<li><strong>VAŠ BROJ TELEFONA:</strong> <strong>Prikupljamo i koristimo</strong> broj telefona vašeg uređaja <strong>samo za njegov prikaz</strong> u sučelju aplikacije za odabir SIM kartice. <em>Ovaj se broj obrađuje lokalno i ne prenosi se.</em></li>
+<li><strong>TELEFONSKI BROJEVI IZ SMS-a:</strong> <strong>Izdvajamo telefonske brojeve</strong> iz SMS poruka kako bismo vam omogućili jednostavno kopiranje. <em>Ovo izdvajanje se događa lokalno.</em></li>
+<li><strong>SADRŽAJ SMS-a ZA OTP:</strong> <strong>Analiziramo SMS tekst</strong> kako bismo automatski otkrili i kopirali OTP kodove u vaš međuspremnik. <em>Ova se analiza odvija lokalno.</em></li>
+</ul>
+
+<h3>🚫 Što NE RADIMO s vašim podacima:</h3>
+<ul>
+<li><strong>NE PRENOSIMO niti PRENOSIMO</strong> vaše SMS poruke, telefonske brojeve ili bilo koji sadržaj poruke na bilo koji poslužitelj.</li>
+<li><strong>NE POHRANJUJEMO</strong> vaše SMS podatke ili telefonske brojeve na vanjskim poslužiteljima.</li>
+<li><strong>NE DIJELIMO</strong> vaše osobne podatke s trećim stranama.</li>
+</ul>
+
+<h3>✅ Ključno jamstvo:</h3>
+<p><strong>Sva obrada podataka odvija se isključivo na vašem uređaju (na uređaju).</strong> Vaše SMS poruke i telefonski brojevi nikada ne napuštaju vaš uređaj. Pristup internetu koristi se samo za slanje MMS-ova i obradu kupnji na Google Playu.</p>
+
+<h3>🔑 Objašnjenje potrebnih dopuštenja:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Za pristup SMS-u za kopiranje OTP-a i izdvajanje telefonskog broja (samo lokalna obrada).</li>
+<li><strong>READ_PHONE_STATE:</strong> Za prikupljanje i prikaz telefonskog broja vašeg uređaja za odabir SIM kartice (samo lokalna upotreba).</li>
+</ul>
+
+<p><em>Nastavkom korištenja prihvaćate sljedeće:</em></p>
+<ol>
+<li>Ova aplikacija prikuplja telefonski broj vašeg uređaja za lokalni prikaz</li>
+<li>Ova aplikacija pristupa SMS porukama za lokalni OTP i izdvajanje telefonskog broja</li>
+<li>Nijedan od ovih podataka ne prenosi se s vašeg uređaja</li>
+</ol>
+]]></string>
+</resources>

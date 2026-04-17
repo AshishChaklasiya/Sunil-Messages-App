@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Csevegés címének stílusa</string>
+    <string name="unread_at_top_g">Olvasatlan mindig a tetején</string>
+    <string name="show_sim_selection_dialog">SIM-kártya kiválasztási párbeszédpanel megjelenítése küldéskor</string>
+    <string name="delete_after_copy">Üzenet törlése szám értesítésből való másolása után</string>
+    <string name="sound_on_out_going_messages">Hang üzenet küldésekor</string>
+    <string name="delivered">Szállítva</string>
+    <string name="failed">Sikertelen</string>
+    <string name="pending">Függőben levő</string>
+    <string name="message_type">Üzenet típusa</string>
+    <string name="show_number_in_title">Szám megjelenítése a csevegés fejlécében</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Adathozzáférési nyilatkozat</h2>
+
+<p><strong>Ennek az alkalmazásnak a megfelelő működéséhez hozzáférésre van szüksége az SMS-üzenetekhez és a telefonnal kapcsolatos információkhoz.</strong></p>
+
+<h3>🔍 Milyen információkhoz férünk hozzá:</h3>
+<ul>
+<li><strong>SMS ÜZENETEK:</strong> Az SMS-üzenetek teljes tartalma.</li>
+<li><strong>TELEFONSZÁMOD(AI):</strong> Az eszközöd SIM-kártyájához (kártyáihoz) társított telefonszám(ok).</li>
+<li><strong>TELEFONSZÁMOK SMS-BŐL:</strong> Az SMS-üzenetekben található telefonszámok.</li>
+</ul>
+
+<h3>📱 Hogyan használjuk fel ezeket az információkat (HELYI AZ ESZKÖZÖN):</h3>
+<ul>
+<li><strong>TELEFONSZÁMOD:</strong> Az eszközöd telefonszámát <strong>csak azért gyűjtjük és használjuk fel</strong>, hogy megjelenítsük azt az alkalmazás felületén SIM-kártya kiválasztásához. <em>Ez a szám helyben kerül feldolgozásra és nem kerül továbbításra.</em></li>
+<li><strong>TELEFONSZÁMOK SMS-BŐL:</strong> <strong>Telefonszámokat kinyerünk</strong> az SMS-üzenetekből, hogy könnyen lemásolhassa azokat. <em>Ez a kinyerés helyben történik.</em></li>
+<li><strong>SMS TARTALOM OTP-HEZ:</strong> <strong>Elemezzük az SMS szövegét</strong>, hogy automatikusan felismerjük és a vágólapra másoljuk az OTP kódokat. <em>Ez az elemzés helyben történik.</em></li>
+</ul>
+
+<h3>🚫 Mit NEM teszünk az adataiddal:</h3>
+<ul>
+<li><strong>NEM TOVÁBBÍTJUK vagy FELTÖLTJÜK</strong> az SMS-üzeneteidet, telefonszámaidat vagy az üzenetek tartalmát semmilyen szerverre.</li>
+<li><strong>NEM TÁROLJUK</strong> az SMS-adataidat vagy telefonszámaidat külső szervereken.</li>
+<li><strong>NEM OSZTUNK MEG</strong> a személyes adataidat harmadik felekkel.</li>
+</ul>
+
+<h3>✅ Legfontosabb garancia:</h3>
+<p><strong>Minden adatfeldolgozás kizárólag az eszközödön (on-device) történik.</strong> Az SMS-üzeneteid és telefonszámaid soha nem hagyják el az eszközödet. Az internet-hozzáférés csak MMS küldésére és Google Play-vásárlások feldolgozására szolgál.</p>
+
+<h3>🔑 Szükséges engedélyek ismertetése:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> SMS-ek elérése OTP-másoláshoz és telefonszám kinyeréséhez (csak helyi feldolgozás).</li>
+<li><strong>READ_PHONE_STATE:</strong> Eszköze telefonszámának gyűjtése és megjelenítése SIM-kártya kiválasztásához (csak helyi használatra).</li>
+</ul>
+
+<p><em>A folytatással Ön tudomásul veszi a következőket:</em></p>
+<ol>
+<li>Ez az alkalmazás begyűjti az eszköze telefonszámát helyi megjelenítéshez</li>
+<li>Ez az alkalmazás hozzáfér az SMS-üzenetekhez helyi OTP- és telefonszám kinyeréshez</li>
+<li>Ezen adatok egyike sem kerül továbbításra az eszközéről</li>
+</ol>
+]]></string>
+</resources>

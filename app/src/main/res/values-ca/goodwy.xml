@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Estil de títol del xat</string>
+    <string name="unread_at_top_g">No llegit sempre a la part superior</string>
+    <string name="show_sim_selection_dialog">Mostra el quadre de diàleg de selecció de la targeta SIM quan s\'envia</string>
+    <string name="delete_after_copy">Suprimir un missatge després de copiar un número d\'una notificació</string>
+    <string name="sound_on_out_going_messages">So en enviar un missatge</string>
+    <string name="delivered">Lliurat</string>
+    <string name="failed">Ha fallat</string>
+    <string name="pending">Pendent</string>
+    <string name="message_type">Tipus de missatge</string>
+    <string name="show_number_in_title">Mostra el número a la capçalera del xat</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Divulgació d\'accés a dades</h2>
+
+<p><strong>Aquesta aplicació requereix accés a missatges SMS i informació relacionada amb el telèfon per funcionar correctament.</strong></p>
+
+<h3>🔍 A quina informació accedim:</h3>
+<ul>
+<li><strong>MISSATGES SMS:</strong> Contingut complet dels vostres missatges SMS.</li>
+<li><strong>ELS VOSTRES NÚMEROS DE TELÈFON:</strong> Els números de telèfon associats a les targetes SIM del vostre dispositiu.</li>
+<li><strong>NÚMEROS DE TELÈFON DELS SMS:</strong> Números de telèfon que figuren als vostres missatges SMS.</li>
+</ul>
+
+<h3>📱 Com utilitzem aquesta informació (LOCALMENT AL DISPOSITIU):</h3>
+<ul>
+<li><strong>EL VOSTRE NÚMERO DE TELÈFON:</strong> Recopilem i utilitzem el número de telèfon del vostre dispositiu <strong>només per mostrar-lo</strong> a la interfície de l\'aplicació per a Selecció de la targeta SIM. <em>Aquest número es processa localment i no es transmet.</em></li>
+<li><strong>NÚMEROS DE TELÈFON DELS SMS:</strong> <strong>Extreiem números de telèfon</strong> dels missatges SMS per permetre que els pugueu copiar fàcilment. <em>Aquesta extracció es fa localment.</em></li>
+<li><strong>CONTINGUT SMS PER A OTP:</strong> <strong>Analitzem el text dels SMS</strong> per detectar i copiar automàticament els codis OTP al porta-retalls. <em>Aquesta anàlisi es fa localment.</em></li>
+</ul>
+
+<h3>🚫 Què NO fem amb les vostres dades:</h3>
+<ul>
+<li><strong>NO TRANSMETEM ni PUGREM</strong> els vostres missatges SMS, números de telèfon ni cap contingut de missatges a cap servidor.</li>
+<li><strong>NO EMMAGATZEMEM</strong> les vostres dades SMS ni números de telèfon en servidors externs.</li>
+<li><strong>NO COMPARTIM</strong> les vostres dades personals amb tercers.</li>
+</ul>
+
+<h3>✅ Garantia clau:</h3>
+<p><strong>Tot el processament de dades es produeix exclusivament al vostre dispositiu (al dispositiu).</strong> Els vostres missatges SMS i números de telèfon no surten mai del vostre dispositiu. L\'accés a Internet només s\'utilitza per enviar MMS i processar compres de Google Play.</p>
+
+<h3>🔑 Explicació dels permisos necessaris:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Per accedir a SMS per copiar OTP i extreure el número de telèfon (només processament local).</li>
+<li><strong>READ_PHONE_STATE:</strong> Per recopilar i mostrar el número de telèfon del dispositiu per a la selecció de SIM (només ús local).</li>
+</ul>
+
+<p><em>En continuar, reconeixes que:</em></p>
+<ol>
+<li>Aquesta aplicació recopila el número de telèfon del dispositiu per a la visualització local</li>
+<li>Aquesta aplicació accedeix als missatges SMS per a l\'OTP local i l\'extracció del número de telèfon</li>
+<li>Cap d\'aquestes dades es transmet des del dispositiu</li>
+</ol>
+]]></string>
+</resources>

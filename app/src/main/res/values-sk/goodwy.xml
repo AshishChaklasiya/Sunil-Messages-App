@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Štýl názvu chatu</string>
+    <string name="unread_at_top_g">Neprečítané vždy hore</string>
+    <string name="show_sim_selection_dialog">Zobraziť dialógové okno výberu SIM karty pri odosielaní</string>
+    <string name="delete_after_copy">Odstránenie správy po skopírovaní čísla z upozornenia</string>
+    <string name="sound_on_out_going_messages">Zvuk pri odosielaní správy</string>
+    <string name="delivered">Doručené</string>
+    <string name="failed">Nepodarilo sa</string>
+    <string name="pending">Čaká na spracovanie</string>
+    <string name="message_type">Typ správy</string>
+    <string name="show_number_in_title">Zobraziť číslo v hlavičke chatu</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Vyhlásenie o prístupe k údajom</h2>
+
+<p><strong>Táto aplikácia vyžaduje na správne fungovanie prístup k SMS správam a informáciám súvisiacim s telefónom.</strong></p>
+
+<h3>🔍 K akým informáciám pristupujeme:</h3>
+<ul>
+<li><strong>SMS SPRÁVY:</strong> Úplný obsah vašich SMS správ.</li>
+<li><strong>VAŠE TELEFÓNNE ČÍSLO (ČÍSLA):</strong> Telefónne číslo (čísla) priradené k SIM karte (kartám) vášho zariadenia.</li>
+<li><strong>TELEFÓNNE ČÍSLA ZO SMS:</strong> Telefónne čísla obsiahnuté vo vašich SMS správach.</li>
+</ul>
+
+<h3>📱 Ako používame tieto informácie (LOKÁLNE NA ZARIADENIE):</h3>
+<ul>
+<li><strong>VAŠE TELEFÓNNE ČÍSLO:</strong> <strong>Zhromažďujeme a používame</strong> telefónne číslo vášho zariadenia <strong>iba na jeho zobrazenie</strong> v rozhraní aplikácie pre výber SIM karty. <em>Toto číslo sa spracováva lokálne a neprenáša sa.</em></li>
+<li><strong>TELEFÓNNE ČÍSLA ZO SMS:</strong> <strong>Extrahujeme telefónne čísla</strong> zo SMS správ, aby ste ich mohli ľahko kopírovať. <em>Táto extrakcia prebieha lokálne.</em></li>
+<li><strong>OBSAH SMS PRE JEDNORAZOVÉ KÓDY:</strong> <strong>Analyzujeme text SMS</strong>, aby sme automaticky zistili a skopírovali kódy JEDNORAZOVÝCH KÓDOV do vašej schránky. <em>Táto analýza prebieha lokálne.</em></li>
+</ul>
+
+<h3>🚫 Čo s vašimi údajmi NEROBÍME:</h3>
+<ul>
+<li><strong>NEPRENÁŠAME ANI NENAHRÁVAME</strong> vaše SMS správy, telefónne čísla ani žiadny obsah správ na žiadny server.</li>
+<li><strong>NEUKLADÁME</strong> vaše SMS údaje ani telefónne čísla na externé servery.</li>
+<li><strong>NEZDIEĽAME</strong> vaše osobné údaje s tretími stranami.</li>
+</ul>
+
+<h3>✅ Kľúčová záruka:</h3>
+<p><strong>Všetko spracovanie údajov prebieha výlučne vo vašom zariadení (v zariadení).</strong> Vaše SMS správy a telefónne čísla nikdy neopustia vaše zariadenie. Prístup na internet sa používa iba na odosielanie MMS a spracovanie nákupov v službe Google Play.</p>
+
+<h3>🔑 Vysvetlenie požadovaných povolení:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Na prístup k SMS správam na kopírovanie OTP a extrakciu telefónneho čísla (iba lokálne spracovanie).</li>
+<li><strong>READ_PHONE_STATE:</strong> Na zhromažďovanie a zobrazovanie telefónneho čísla vášho zariadenia na výber SIM karty (iba lokálne použitie).</li>
+</ul>
+
+<p><em>Pokračovaním beriete na vedomie, že:</em></p>
+<ol>
+<li>Táto aplikácia zhromažďuje telefónne číslo vášho zariadenia na lokálne zobrazenie</li>
+<li>Táto aplikácia pristupuje k SMS správam na lokálne OTP a extrakciu telefónneho čísla</li>
+<li>Žiadne z týchto údajov sa neprenášajú z vášho zariadenia</li>
+</ol>
+]]></string>
+</resources>

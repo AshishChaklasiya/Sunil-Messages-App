@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Stil des Chattitels</string>
+    <string name="unread_at_top_g">Ungelesen immer ganz oben</string>
+    <string name="show_sim_selection_dialog">SIM-Karten-Auswahldialog beim Senden anzeigen</string>
+    <string name="delete_after_copy">Nachricht nach dem Kopieren einer Nummer aus einer Benachrichtigung löschen</string>
+    <string name="sound_on_out_going_messages">Ton beim Senden einer Nachricht</string>
+    <string name="delivered">Geliefert</string>
+    <string name="failed">Fehlgeschlagen</string>
+    <string name="pending">Ausstehend</string>
+    <string name="message_type">Nachrichtentyp</string>
+    <string name="show_number_in_title">Nummer im Chat-Header anzeigen</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Datenzugriffshinweise</h2>
+
+<p><strong>Diese App benötigt Zugriff auf SMS-Nachrichten und telefonbezogene Informationen, um ordnungsgemäß zu funktionieren.</strong></p>
+
+<h3>🔍 Welche Informationen wir abrufen:</h3>
+<ul>
+<li><strong>SMS-NACHRICHTEN:</strong> Der vollständige Inhalt Ihrer SMS-Nachrichten.</li>
+
+<li><strong>IHRE TELEFONNUMMER(N):</strong> Die mit der/den SIM-Karte(n) Ihres Geräts verknüpfte(n) Telefonnummer(n).</li>
+
+<li><strong>TELEFONNUMMERN AUS SMS:</strong> Telefonnummern, die in Ihren SMS-Nachrichten enthalten sind.</li>
+
+</ul>
+
+<h3>📱 Wie wir diese Informationen verwenden (LOKAL AUF DEM GERÄT):</h3>
+<ul>
+<li><strong>IHRE TELEFONNUMMER:</strong> Wir <strong>erfassen und verwenden</strong> die Telefonnummer Ihres Geräts <strong>ausschließlich zur Anzeige</strong> in der App-Oberfläche zur SIM-Kartenauswahl. <em>Diese Nummer wird lokal verarbeitet und nicht übertragen.</em></li>
+
+<li><strong>TELEFONNUMMERN AUS SMS:</strong> Wir <strong>extrasieren Telefonnummern</strong> aus SMS-Nachrichten, damit Sie diese einfach kopieren können. <em>Diese Extraktion erfolgt lokal.</em></li>
+
+<li><strong>SMS-INHALT FÜR OTP:</strong> Wir <strong>analysieren SMS-Texte</strong>, um OTP-Codes automatisch zu erkennen und in Ihre Zwischenablage zu kopieren. <em>Diese Analyse erfolgt lokal.</em></li>
+
+</ul>
+
+<h3>🚫 Was wir NICHT mit Ihren Daten tun:</h3>
+
+<ul>
+<li><strong>Wir übertragen oder laden Ihre SMS-Nachrichten, Telefonnummern oder sonstige Nachrichteninhalte NICHT auf einen Server hoch.</li>
+
+<li><strong>Wir speichern Ihre SMS-Daten oder Telefonnummern NICHT auf externen Servern.</li>
+
+<li><strong>Wir geben Ihre personenbezogenen Daten NICHT an Dritte weiter.</li>
+
+</ul>
+
+<h3>✅ Wichtigste Garantie:</h3>
+<p><strong>Die gesamte Datenverarbeitung erfolgt ausschließlich auf Ihrem Gerät (On-Device).</strong> Ihre SMS-Nachrichten und Telefonnummern verlassen Ihr Gerät niemals. Der Internetzugang wird nur zum Senden von MMS und zur Abwicklung von Google Play-Käufen verwendet.</p>
+
+<h3>🔑 Erläuterung der erforderlichen Berechtigungen:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Zugriff auf SMS zum Kopieren des OTP und zum Extrahieren der Telefonnummer (nur lokale Verarbeitung).</li>
+<li><strong>READ_PHONE_STATE:</strong> Erfassung und Anzeige der Telefonnummer Ihres Geräts zur SIM-Kartenauswahl (nur lokale Nutzung).</li>
+</ul>
+
+<p><em>Durch die weitere Nutzung bestätigen Sie Folgendes:</em></p>
+<ol>
+<li>Diese App erfasst die Telefonnummer Ihres Geräts zur lokalen Anzeige.</li>
+
+<li>Diese App greift auf SMS-Nachrichten zu, um den OTP lokal zu erfassen und die Telefonnummer zu extrahieren.</li>
+
+<li>Keine dieser Daten wird von Ihrem Gerät übertragen.</li>
+</ol>
+
+]]></string>
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Estilo de título de chat</string>
+    <string name="unread_at_top_g">Lo no leído, siempre en la parte superior</string>
+    <string name="show_sim_selection_dialog">Mostrar el cuadro de diálogo de selección de la tarjeta SIM al enviar</string>
+    <string name="delete_after_copy">Eliminar mensaje después de copiar un número de una notificación</string>
+    <string name="sound_on_out_going_messages">Sonido al enviar un mensaje</string>
+    <string name="delivered">Entregado</string>
+    <string name="failed">Fallido</string>
+    <string name="pending">Pendiente</string>
+    <string name="message_type">Tipo de mensaje</string>
+    <string name="show_number_in_title">Mostrar número en el encabezado del chat</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Divulgación de acceso a datos</h2>
+
+<p><strong>Esta aplicación requiere acceso a los mensajes SMS y a la información del teléfono para funcionar correctamente.</strong></p>
+
+<h3>🔍 A qué información accedemos:</h3>
+<ul>
+<li><strong>MENSAJES SMS:</strong> Contenido completo de sus mensajes SMS.</li>
+<li><strong>SU(S) NÚMERO(S) DE TELÉFONO:</strong> El(los) número(s) de teléfono asociado(s) a la(s) tarjeta(s) SIM de su dispositivo.</li>
+<li><strong>NÚMEROS DE TELÉFONO DE SMS:</strong> Números de teléfono incluidos en sus mensajes SMS.</li>
+</ul>
+
+<h3>📱 Cómo usamos esta información (LOCALMENTE EN EL DISPOSITIVO):</h3>
+<ul>
+<li><strong>SU NÚMERO DE TELÉFONO:</strong> Recopilamos y usamos el número de teléfono de su dispositivo <strong>solo para mostrar En la interfaz de la aplicación para seleccionar la tarjeta SIM, se muestra este número. Este número se procesa localmente y no se transmite.
+
+<li><strong>NÚMEROS DE TELÉFONO DE SMS:</strong> Extraemos los números de teléfono de los mensajes SMS para que puedas copiarlos fácilmente. Esta extracción se realiza localmente.
+
+<li><strong>CONTENIDO DE SMS PARA OTP:</strong> Analizamos el texto de los SMS para detectar y copiar automáticamente los códigos OTP a tu portapapeles. Este análisis se realiza localmente.
+
+
+<h3>🚫 Qué NO hacemos con tus datos:
+
+<ul>
+<li><strong>NO TRANSMITIMOS ni SUBIMOS</strong> tus mensajes SMS, números de teléfono ni ningún contenido de mensajes a ningún servidor.
+
+<li><strong>NO ALMACENAMOS</strong> tus datos SMS ni números de teléfono en servidores externos.
+
+<li><strong>NO COMPARTIMOS</strong> tus datos personales con terceros.
+
+
+<h3>✅ Garantía Clave:
+
+<p><strong>Todo el procesamiento de datos se realiza exclusivamente en tu dispositivo.</strong> Tus mensajes SMS y números de teléfono nunca salen de tu dispositivo. El acceso a internet se usa únicamente para enviar MMS y procesar compras de Google Play.</p>
+
+<h3>🔑 Permisos requeridos:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Para acceder a SMS para copiar OTP y extraer el número de teléfono (solo procesamiento local).</li>
+<li><strong>READ_PHONE_STATE:</strong> Para recopilar y mostrar el número de teléfono de su dispositivo para la selección de la tarjeta SIM (solo para uso local).</li>
+</ul>
+
+<p><em>Al continuar, usted reconoce que:</em></p>
+<ol>
+<li>Esta aplicación recopila el número de teléfono de su dispositivo para su visualización local.</li>
+<li>Esta aplicación accede a los mensajes SMS para OTP local y la extracción del número de teléfono.</li>
+<li>Ninguno de estos datos se transmite desde su dispositivo.</li>
+</ol>
+]]></string>
+</resources>

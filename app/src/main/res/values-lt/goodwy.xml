@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Pokalbio pavadinimo stilius</string>
+    <string name="unread_at_top_g">Neskaityta visada viršuje</string>
+    <string name="show_sim_selection_dialog">Siunčiant rodyti SIM kortelės pasirinkimo dialogo langą</string>
+    <string name="delete_after_copy">Pranešimo ištrynimas nukopijavus numerį iš pranešimo</string>
+    <string name="sound_on_out_going_messages">Garsas siunčiant pranešimą</string>
+    <string name="delivered">Pristatyta</string>
+    <string name="failed">Nepavyko</string>
+    <string name="pending">Laukiama</string>
+    <string name="message_type">Pranešimo tipas</string>
+    <string name="show_number_in_title">Rodyti numerį pokalbio antraštėje</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Duomenų prieigos atskleidimas</h2>
+
+<p><strong>Šiai programėlei reikalinga prieiga prie SMS žinučių ir su telefonu susijusios informacijos, kad ji tinkamai veiktų.</strong></p>
+
+<h3>🔍 Prie kokios informacijos mes prieiname:</h3>
+<ul>
+<li><strong>SMS ŽINUTĖS:</strong> Visas jūsų SMS žinučių turinys.</li>
+<li><strong>JŪSŲ TELEFONO NUMERIS (-IAI):</strong> Telefono numeris (-iai), susietas (-i) su jūsų įrenginio SIM kortele (-ėmis).</li>
+<li><strong>TELEFONO NUMERIAI IŠ SMS:</strong> Telefono numeriai, esantys jūsų SMS žinutėse.</li>
+</ul>
+
+<h3>📱 Kaip mes naudojame šią informaciją (VIETINIAME ĮRENGINYJE):</h3>
+<ul>
+<li><strong>JŪSŲ TELEFONO NUMERIS:</strong> Mes <strong>renkame ir naudojame</strong> jūsų įrenginio telefono numerį <strong>tik tam, kad jį rodytume</strong> programėlės sąsajoje SIM kortelės pasirinkimui. <em>Šis numeris apdorojamas vietoje ir nėra perduodamas.</em></li>
+<li><strong>TELEFONŲ NUMERIAI IŠ SMS:</strong> Mes <strong>išskiriame telefono numerius</strong> iš SMS žinučių, kad galėtumėte juos lengvai nukopijuoti. <em>Šis išskyrimas atliekamas vietoje.</em></li>
+<li><strong>SMS TURINYS VIENKARTINIAM PARAMETRUI:</strong> Mes <strong>analizuojame SMS tekstą</strong>, kad automatiškai aptiktume ir nukopijuotume vienkartinius paraiškos kodus į jūsų iškarpinę. <em>Ši analizė atliekama lokaliai.</em></li>
+</ul>
+
+<h3>🚫 Ko mes NEDAROME su jūsų duomenimis:</h3>
+<ul>
+<li><strong>Mes NEPERDUODAMME ir NEĮKELIAME</strong> jūsų SMS žinučių, telefono numerių ar bet kokio pranešimų turinio į jokį serverį.</li>
+<li><strong>Mes NESAUDOME</strong> jūsų SMS duomenų ar telefono numerių išoriniuose serveriuose.</li>
+<li><strong>Mes NEDALINAMĖS</strong> jūsų asmens duomenimis su trečiosiomis šalimis.</li>
+</ul>
+
+<h3>✅ Pagrindinė garantija:</h3>
+<p><strong>Visas duomenų apdorojimas vyksta tik jūsų įrenginyje.</strong> Jūsų SMS žinutės ir telefono numeriai niekada nepalieka jūsų įrenginio. Interneto prieiga naudojama tik MMS siuntimui ir „Google Play“ pirkinių apdorojimui.</p>
+
+<h3>🔑 Reikalingų leidimų paaiškinimas:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Pasiekti SMS žinutes OTP kopijavimui ir telefono numerio išgavimui (tik vietinis apdorojimas).</li>
+<li><strong>READ_PHONE_STATE:</strong> Rinkti ir rodyti jūsų įrenginio telefono numerį SIM kortelės pasirinkimui (tik vietinis naudojimas).</li>
+</ul>
+
+<p><em>Tęsdami patvirtinate, kad:</em></p>
+<ol>
+<li>Ši programa renka jūsų įrenginio telefono numerį vietiniam rodymui</li>
+<li>Ši programa pasiekia SMS žinutes vietiniam OTP ir telefono numerio išgavimui</li>
+<li>Jokie iš šių duomenų nėra perduodami iš jūsų įrenginio</li>
+</ol>
+]]></string>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Tērzēšanas virsraksta stils</string>
+    <string name="unread_at_top_g">Nelasītie vienmēr augšpusē</string>
+    <string name="show_sim_selection_dialog">Sūtīšanas laikā rādīt SIM kartes izvēles dialoglodziņu</string>
+    <string name="delete_after_copy">Ziņojuma dzēšana pēc numura kopēšanas no paziņojuma</string>
+    <string name="sound_on_out_going_messages">Skaņa, nosūtot ziņojumu</string>
+    <string name="delivered">Piegādāts</string>
+    <string name="failed">Neizdevās</string>
+    <string name="pending">Gaida</string>
+    <string name="message_type">Ziņojuma veids</string>
+    <string name="show_number_in_title">Rādīt numuru tērzēšanas galvenē</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Datu piekļuves izpaušana</h2>
+
+<p><strong>Lai šī lietotne darbotos pareizi, ir nepieciešama piekļuve īsziņām un ar tālruni saistītai informācijai.</strong></p>
+
+<h3>🔍 Kādai informācijai mēs piekļūstam:</h3>
+<ul>
+<li><strong>ĪSZIŅAS:</strong> Pilns jūsu īsziņu saturs.</li>
+<li><strong>JŪSU TĀLRUŅA NUMURS(-I):</strong> Tālruņa numurs(-i), kas saistīts(-i) ar jūsu ierīces SIM karti(-ēm).</li>
+<li><strong>TĀLRUŅA NUMURI NO ĪSZIŅĀM:</strong> Tālruņa numuri, kas ietverti jūsu īsziņās.</li>
+</ul>
+
+<h3>📱 Kā mēs izmantojam šo informāciju (LOKĀLI IERĪCĒ):</h3>
+<ul>
+<li><strong>JŪSU TĀLRUŅA NUMURS:</strong> Mēs <strong>apkopojam un izmantojam</strong> jūsu ierīces tālruņa numuru <strong>tikai, lai to parādītu</strong> lietotnes saskarnē SIM kartes izvēlei. <em>Šis numurs tiek apstrādāts lokāli un netiek pārsūtīts.</em></li>
+<li><strong>TĀLRUŅA NUMURI NO ĪSZIŅĀM:</strong> Mēs <strong>izgūstam tālruņu numurus</strong> no īsziņām, lai jūs varētu tos viegli kopēt. <em>Šī izguve notiek lokāli.</em></li>
+<li><strong>ĪSZIŅU SATURS VIENREIZĒJAM PAROLAM:</strong> Mēs <strong>analizējam īsziņu tekstu</strong>, lai automātiski noteiktu un kopētu VRP kodus jūsu starpliktuvē. <em>Šī analīze notiek lokāli.</em></li>
+</ul>
+
+<h3>🚫 Ko mēs NEDARĀM ar jūsu datiem:</h3>
+<ul>
+<li><strong>Mēs NEPĀRSŪTĪJAM un NEAUGŠUPIELĀDĒJAM</strong> jūsu īsziņas, tālruņu numurus vai jebkādu ziņojumu saturu uz nevienu serveri.</li>
+<li><strong>Mēs NEUZGLABĀJAM</strong> jūsu īsziņu datus vai tālruņu numurus ārējos serveros.</li>
+<li><strong>Mēs NEKOPĪGOJAM</strong> jūsu personas datus ar trešajām personām.</li>
+</ul>
+
+<h3>✅ Galvenā garantija:</h3>
+<p><strong>Visa datu apstrāde notiek tikai jūsu ierīcē (uz ierīces).</strong> Jūsu īsziņas un tālruņu numuri nekad neatstāj jūsu ierīci. Interneta piekļuve tiek izmantota tikai MMS sūtīšanai un Google Play pirkumu apstrādei.</p>
+
+<h3>🔑 Nepieciešamo atļauju skaidrojums:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> Lai piekļūtu SMS, lai kopētu vienreizējo paroli (OTP) un iegūtu tālruņa numuru (tikai lokāla apstrāde).</li>
+<li><strong>READ_PHONE_STATE:</strong> Lai apkopotu un parādītu jūsu ierīces tālruņa numuru SIM kartes izvēlei (tikai lokālai lietošanai).</li>
+</ul>
+
+<p><em>Turpinot, jūs apliecināt, ka:</em></p>
+<ol>
+<li>Šī lietotne apkopo jūsu ierīces tālruņa numuru lokālai attēlošanai</li>
+<li>Šī lietotne piekļūst SMS ziņojumiem, lai iegūtu lokālu vienreizējo paroli (OTP) un iegūtu tālruņa numuru</li>
+<li>Neviens no šiem datiem netiek pārsūtīts no jūsu ierīces</li>
+</ol>
+]]></string>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title_style_g">Söhbət başlığı üslubu</string>
+    <string name="unread_at_top_g">Həmişə yuxarıda oxunmamış</string>
+    <string name="show_sim_selection_dialog">Göndərərkən SİM kart seçimi dialoqunu göstərin</string>
+    <string name="delete_after_copy">Bildirişdən nömrəni köçürdükdən sonra mesajı silin</string>
+    <string name="sound_on_out_going_messages">Mesaj göndərərkən səs</string>
+    <string name="delivered">Çatdırıldı</string>
+    <string name="failed">Uğursuz oldu</string>
+    <string name="pending">Gözlənir</string>
+    <string name="message_type">Mesaj növü</string>
+    <string name="show_number_in_title">Çat başlığında nömrəni göstərin</string>
+    <string name="warning_disclosure"><![CDATA[
+<h2>Məlumat Girişi Açıqlaması</h2>
+
+<p><strong>Bu tətbiqin düzgün işləməsi üçün SMS mesajlarına və telefonla əlaqəli məlumatlara giriş tələb olunur.</strong></p>
+
+<h3>🔍 Hansı Məlumatlara Daxil Olduğumuz:</h3>
+<ul>
+<li><strong>SMS MESAJLARI:</strong> SMS mesajlarınızın tam məzmunu.</li>
+<li><strong>TELEFON NÖMRƏNİZ(LƏRİNİZ):</strong> Cihazınızın SIM kartı(ları) ilə əlaqəli telefon nömrəsi(ləri).</li>
+<li><strong>SMS-DƏN GƏLƏN TELEFON NÖMRƏLƏRİ:</strong> SMS mesajlarınızda olan telefon nömrələri.</li>
+</ul>
+
+<h3>📱 Bu Məlumatdan Necə İstifadə Edirik (CİHAZDA YERLİ):</h3>
+<ul>
+<li><strong>TELEFON NÖMRƏNİZ:</strong> Cihazınızın telefon nömrəsini <strong>yalnız onu SIM kart üçün tətbiq interfeysində göstərmək</strong> üçün <strong>toplayır və istifadə edirik. seçim. <em>Bu nömrə lokal olaraq emal olunur və ötürülmür.</em></li>
+<li><strong>SMS-DƏN TELEFON NÖMRƏLƏRİ:</strong> SMS mesajlarından telefon nömrələrini asanlıqla kopyalamaq üçün çıxarırıq. <em>Bu çıxarış lokal olaraq baş verir.</em></li>
+<li><strong>OTP ÜÇÜN SMS MƏZMUNU:</strong> OTP kodlarını avtomatik olaraq aşkarlamaq və panoya kopyalamaq üçün SMS mətnini təhlil edirik</strong>. <em>Bu təhlil yerli olaraq aparılır.</em></li>
+</ul>
+
+<h3>🚫 Məlumatlarınızla NƏ ETMƏYİK:</h3>
+<ul>
+<li><strong>SMS mesajlarınızı, telefon nömrələrinizi və ya hər hansı mesaj məzmununuzu heç bir serverə ötürmürük və ya yükləmirik</strong>.</li>
+<li><strong>SMS məlumatlarınızı və ya telefon nömrələrinizi xarici serverlərdə SAXLAMAYIQ</strong>.</li>
+<li><strong>Şəxsi məlumatlarınızı üçüncü tərəflərlə PAYLAŞMAYIQ</strong>.</li>
+</ul>
+
+<h3>✅ Açar Zəmanəti:</h3>
+<p><strong>Bütün məlumatların emalı yalnız cihazınızda (cihazda) baş verir.</strong> SMS mesajlarınız və telefon nömrələriniz heç vaxt cihazınızdan çıxmır. İnternetə giriş yalnız MMS göndərmək və Google Play alış-verişlərini emal etmək üçün istifadə olunur.</p>
+
+<h3>🔑 Tələb olunan icazələrin izahı:</h3>
+<ul>
+<li><strong>READ_SMS:</strong> OTP kopyalamaq və telefon nömrəsini çıxarmaq üçün SMS-ə daxil olmaq (yalnız yerli emal).</li>
+<li><strong>READ_PHONE_STATE:</strong> SIM seçimi üçün cihazınızın telefon nömrəsini toplamaq və göstərmək (yalnız yerli istifadə üçün).</li>
+</ul>
+
+<p><em>Davam etməklə, siz təsdiq edirsiniz ki:</em></p>
+<ol>
+<li>Bu tətbiq cihazınızın telefon nömrəsini yerli ekran üçün toplayır</li>
+<li>Bu tətbiq yerli OTP və telefon nömrəsini çıxarmaq üçün SMS mesajlarına daxil olur</li>
+<li>Bu məlumatların heç biri cihazınızdan ötürülmür</li>
+</ol>
+]]></string>
+</resources>
