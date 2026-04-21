@@ -1,25 +1,14 @@
 package com.smsnew.messenger.commonsLibCustom.extensions
 
 import android.Manifest
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.role.RoleManager
-import android.content.ActivityNotFoundException
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.ContentResolver
-import android.content.ContentUris
-import android.content.ContentValues
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.content.pm.ShortcutManager
 import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.BitmapFactory
@@ -29,42 +18,29 @@ import android.media.MediaMetadataRetriever
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.os.UserManager
 import android.provider.BaseColumns
 import android.provider.BlockedNumberContract.BlockedNumbers
 import android.provider.ContactsContract.CommonDataKinds.*
-import android.provider.DocumentsContract
-import android.provider.MediaStore.Audio
-import android.provider.MediaStore.Files
-import android.provider.MediaStore.Images
-import android.provider.MediaStore.MediaColumns
-import android.provider.MediaStore.Video
+import android.provider.MediaStore.*
 import android.provider.OpenableColumns
 import android.provider.Settings
 import android.telecom.TelecomManager
 import android.telephony.PhoneNumberUtils
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.accessibility.AccessibilityManager
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
 import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
-import androidx.core.text.BidiFormatter
-import androidx.exifinterface.media.ExifInterface
 import androidx.loader.content.CursorLoader
 import com.github.ajalt.reprint.core.Reprint
 import com.smsnew.messenger.R
@@ -73,9 +49,8 @@ import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.PERMISSIO
 import com.smsnew.messenger.commonsLibCustom.models.AlarmSound
 import com.smsnew.messenger.commonsLibCustom.models.BlockedNumber
 import com.smsnew.messenger.commonsLibCustom.models.contacts.ContactRelation
-import com.smsnew.messenger.R as stringsR
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -84,12 +59,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.joda.time.DateTimeConstants
-import androidx.core.graphics.toColorInt
 import java.util.regex.PatternSyntaxException
+import kotlin.math.roundToInt
+import com.smsnew.messenger.R as stringsR
 
 fun Context.getSharedPrefs() = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
 
@@ -158,126 +130,8 @@ fun Context.isBiometricAuthSupported(): Boolean {
     }
 }
 
-fun Context.getLatestMediaId(uri: Uri = Files.getContentUri("external")): Long {
-    val projection = arrayOf(
-        BaseColumns._ID
-    )
-    try {
-        val cursor = queryCursorDesc(uri, projection, BaseColumns._ID, 1)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getLongValue(BaseColumns._ID)
-            }
-        }
-    } catch (_: Exception) {
-    }
-    return 0
-}
-
-private fun Context.queryCursorDesc(
-    uri: Uri,
-    projection: Array<String>,
-    sortColumn: String,
-    limit: Int,
-): Cursor? {
-    return if (isRPlus()) {
-        val queryArgs = bundleOf(
-            ContentResolver.QUERY_ARG_LIMIT to limit,
-            ContentResolver.QUERY_ARG_SORT_DIRECTION to ContentResolver.QUERY_SORT_DIRECTION_DESCENDING,
-            ContentResolver.QUERY_ARG_SORT_COLUMNS to arrayOf(sortColumn),
-        )
-        contentResolver.query(uri, projection, queryArgs, null)
-    } else {
-        val sortOrder = "$sortColumn DESC LIMIT $limit"
-        contentResolver.query(uri, projection, null, null, sortOrder)
-    }
-}
-
-fun Context.getLatestMediaByDateId(uri: Uri = Files.getContentUri("external")): Long {
-    val projection = arrayOf(
-        BaseColumns._ID
-    )
-    try {
-        val cursor = queryCursorDesc(uri, projection, Images.ImageColumns.DATE_TAKEN, 1)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                return cursor.getLongValue(BaseColumns._ID)
-            }
-        }
-    } catch (_: Exception) {
-    }
-    return 0
-}
-
-// some helper functions were taken from https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-fun Context.getRealPathFromURI(uri: Uri): String? {
-    if (uri.scheme == "file") {
-        return uri.path
-    }
-
-    if (isDownloadsDocument(uri)) {
-        val id = DocumentsContract.getDocumentId(uri)
-        if (id.areDigitsOnly()) {
-            val newUri = ContentUris.withAppendedId("content://downloads/public_downloads".toUri(), id.toLong())
-            val path = getDataColumn(newUri)
-            if (path != null) {
-                return path
-            }
-        }
-    } else if (isExternalStorageDocument(uri)) {
-        val documentId = DocumentsContract.getDocumentId(uri)
-        val parts = documentId.split(":")
-        if (parts[0].equals("primary", true)) {
-            return "${Environment.getExternalStorageDirectory().absolutePath}/${parts[1]}"
-        }
-    } else if (isMediaDocument(uri)) {
-        val documentId = DocumentsContract.getDocumentId(uri)
-        val split = documentId.split(":").dropLastWhile { it.isEmpty() }.toTypedArray()
-        val type = split[0]
-
-        val contentUri = when (type) {
-            "video" -> Video.Media.EXTERNAL_CONTENT_URI
-            "audio" -> Audio.Media.EXTERNAL_CONTENT_URI
-            else -> Images.Media.EXTERNAL_CONTENT_URI
-        }
-
-        val selection = "_id=?"
-        val selectionArgs = arrayOf(split[1])
-        val path = getDataColumn(contentUri, selection, selectionArgs)
-        if (path != null) {
-            return path
-        }
-    }
-
-    return getDataColumn(uri)
-}
-
-fun Context.getDataColumn(uri: Uri, selection: String? = null, selectionArgs: Array<String>? = null): String? {
-    try {
-        val projection = arrayOf(Files.FileColumns.DATA)
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                val data = cursor.getStringValue(Files.FileColumns.DATA)
-                if (data != "null") {
-                    return data
-                }
-            }
-        }
-    } catch (_: Exception) {
-    }
-    return null
-}
-
-private fun isMediaDocument(uri: Uri) = uri.authority == "com.android.providers.media.documents"
-
-private fun isDownloadsDocument(uri: Uri) = uri.authority == "com.android.providers.downloads.documents"
-
-private fun isExternalStorageDocument(uri: Uri) = uri.authority == "com.android.externalstorage.documents"
 
 fun Context.hasPermission(permId: Int) = ContextCompat.checkSelfPermission(this, getPermissionString(permId)) == PERMISSION_GRANTED
-
-fun Context.hasAllPermissions(permIds: Collection<Int>) = permIds.all(this::hasPermission)
 
 @SuppressLint("InlinedApi")
 fun getPermissionString(id: Int) = when (id) {
@@ -387,29 +241,6 @@ fun Context.queryCursor(
     }
 }
 
-fun Context.queryCursor(
-    uri: Uri,
-    projection: Array<String>,
-    queryArgs: Bundle,
-    showErrors: Boolean = false,
-    callback: (cursor: Cursor) -> Unit
-) {
-    try {
-        val cursor = contentResolver.query(uri, projection, queryArgs, null)
-        cursor?.use {
-            if (cursor.moveToFirst()) {
-                do {
-                    callback(cursor)
-                } while (cursor.moveToNext())
-            }
-        }
-    } catch (e: Exception) {
-        if (showErrors) {
-            showErrorToast(e)
-        }
-    }
-}
-
 fun Context.getFilenameFromUri(uri: Uri): String {
     return if (uri.scheme == "file") {
         File(uri.toString()).name
@@ -418,52 +249,6 @@ fun Context.getFilenameFromUri(uri: Uri): String {
     }
 }
 
-fun Context.getMimeTypeFromUri(uri: Uri): String {
-    var mimetype = uri.path?.getMimeType() ?: ""
-    if (mimetype.isEmpty()) {
-        try {
-            mimetype = contentResolver.getType(uri) ?: ""
-        } catch (_: IllegalStateException) {
-        }
-    }
-    return mimetype
-}
-
-fun Context.ensurePublicUri(path: String, applicationId: String): Uri? {
-    return when {
-        hasProperStoredAndroidTreeUri(path) && isRestrictedSAFOnlyRoot(path) -> {
-            getAndroidSAFUri(path)
-        }
-
-        hasProperStoredDocumentUriSdk30(path) && isAccessibleWithSAFSdk30(path) -> {
-            createDocumentUriUsingFirstParentTreeUri(path)
-        }
-
-        isPathOnOTG(path) -> {
-            getDocumentFile(path)?.uri
-        }
-
-        else -> {
-            val uri = path.toUri()
-            if (uri.scheme == "content") {
-                uri
-            } else {
-                val newPath = if (uri.toString().startsWith("/")) uri.toString() else uri.path ?: ""
-                val file = File(newPath)
-                getFilePublicUri(file, applicationId)
-            }
-        }
-    }
-}
-
-fun Context.ensurePublicUri(uri: Uri, applicationId: String): Uri {
-    return if (uri.scheme == "content") {
-        uri
-    } else {
-        val file = File(uri.path!!)
-        getFilePublicUri(file, applicationId)
-    }
-}
 
 fun Context.getFilenameFromContentUri(uri: Uri): String? {
     val projection = arrayOf(
@@ -502,8 +287,7 @@ fun Context.getMyContactsCursor(favoritesOnly: Boolean, withPhoneNumbersOnly: Bo
     val getFavoritesOnly = if (favoritesOnly) "1" else "0"
     val getWithPhoneNumbersOnly = if (withPhoneNumbersOnly) "1" else "0"
     val args = arrayOf(getFavoritesOnly, getWithPhoneNumbersOnly)
-    val uri = if (isPackageInstalled("com.smsnew.messenger.contacts")) MyContactsContentProvider.CONTACTS_CONTENT_URI_NEW
-        else MyContactsContentProvider.CONTACTS_CONTENT_URI
+    val uri =  MyContactsContentProvider.CONTACTS_CONTENT_URI
     CursorLoader(this, uri, null, null, args, null).loadInBackground()
 } catch (_: Exception) {
     null
@@ -515,7 +299,7 @@ fun getCurrentFormattedDateTime(): String {
 }
 
 fun Context.updateSDCardPath() {
-        ensureBackgroundThread {
+    ensureBackgroundThread {
         val oldPath = baseConfig.sdCardPath
         baseConfig.sdCardPath = getSDCardPath()
         if (oldPath != baseConfig.sdCardPath) {
@@ -524,39 +308,10 @@ fun Context.updateSDCardPath() {
     }
 }
 
-fun Context.getUriMimeType(path: String, newUri: Uri): String {
-    var mimeType = path.getMimeType()
-    if (mimeType.isEmpty()) {
-        mimeType = getMimeTypeFromUri(newUri)
-    }
-    return mimeType
-}
-
 
 fun Context.canAccessGlobalConfig(): Boolean {
     return isPro() && ContextCompat.checkSelfPermission(this, PERMISSION_WRITE_GLOBAL_SETTINGS) == PERMISSION_GRANTED
 }
-
-fun Context.isOrWasThankYouInstalled(allowPretend: Boolean = true): Boolean {
-    return when {
-        isPackageInstalled("com.goodwy.audiobook")
-            || isPackageInstalled("com.goodwy.voicerecorder")
-            || isPackageInstalled("com.goodwy.files") -> {
-            if (!baseConfig.hadThankYouInstalled) {
-                baseConfig.hadThankYouInstalled = true
-            }
-            true
-        }
-
-        baseConfig.hadThankYouInstalled -> true
-        /*resources.getBoolean(R.bool.pretend_thank_you_installed) && */allowPretend -> true
-        else -> false
-    }
-}
-
-fun PackageManager.isAppInstalled(packageName: String): Boolean =
-    getInstalledApplications(PackageManager.GET_META_DATA)
-        .firstOrNull { it.packageName == packageName } != null
 
 fun Context.addLockedLabelIfNeeded(stringId: Int, lock: Boolean = false): String {
     return if (lock) {
@@ -572,106 +327,6 @@ fun Context.isPackageInstalled(packageName: String?): Boolean {
     val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
     return !list.isEmpty()
 }
-
-/*fun Context.isPackageInstalled(pkgName: String): Boolean {
-    return try {
-        packageManager.getPackageInfo(pkgName, 0)
-        true
-    } catch (e: Exception) {
-        false
-    }
-}*/
-
-// format day bits to strings like "Mon, Tue, Wed"
-fun Context.getSelectedDaysString(bitMask: Int): String {
-    val dayBits = arrayListOf(MONDAY_BIT, TUESDAY_BIT, WEDNESDAY_BIT, THURSDAY_BIT, FRIDAY_BIT, SATURDAY_BIT, SUNDAY_BIT)
-    val weekDays = resources.getStringArray(R.array.week_days_short).toList() as ArrayList<String>
-
-    if (baseConfig.isSundayFirst) {
-        dayBits.moveLastItemToFront()
-        weekDays.moveLastItemToFront()
-    }
-
-    var days = ""
-    dayBits.forEachIndexed { index, bit ->
-        if (bitMask and bit != 0) {
-            days += "${weekDays[index]}, "
-        }
-    }
-    return days.trim().trimEnd(',')
-}
-
-fun Context.formatMinutesToTimeString(totalMinutes: Int) = formatSecondsToTimeString(totalMinutes * 60)
-
-fun Context.formatSecondsToTimeString(totalSeconds: Int): String {
-    val days = totalSeconds / DAY_SECONDS
-    val hours = (totalSeconds % DAY_SECONDS) / HOUR_SECONDS
-    val minutes = (totalSeconds % HOUR_SECONDS) / MINUTE_SECONDS
-    val seconds = totalSeconds % MINUTE_SECONDS
-    val timesString = StringBuilder()
-    if (days > 0) {
-        val daysString = String.format(resources.getQuantityString(R.plurals.days, days, days))
-        timesString.append("$daysString, ")
-    }
-
-    if (hours > 0) {
-        val hoursString = String.format(resources.getQuantityString(R.plurals.hours, hours, hours))
-        timesString.append("$hoursString, ")
-    }
-
-    if (minutes > 0) {
-        val minutesString = String.format(resources.getQuantityString(R.plurals.minutes, minutes, minutes))
-        timesString.append("$minutesString, ")
-    }
-
-    if (seconds > 0) {
-        val secondsString = String.format(resources.getQuantityString(R.plurals.seconds, seconds, seconds))
-        timesString.append(secondsString)
-    }
-
-    var result = timesString.toString().trim().trimEnd(',')
-    if (result.isEmpty()) {
-        result = String.format(resources.getQuantityString(R.plurals.minutes, 0, 0))
-    }
-    return result
-}
-
-fun Context.formatMinutesToShortTimeString(totalMinutes: Int) = formatSecondsToShortTimeString(totalMinutes * 60)
-
-fun Context.formatSecondsToShortTimeString(totalSeconds: Int): String {
-    val days = totalSeconds / DAY_SECONDS
-    val hours = (totalSeconds % DAY_SECONDS) / HOUR_SECONDS
-    val minutes = (totalSeconds % HOUR_SECONDS) / MINUTE_SECONDS
-    val seconds = totalSeconds % MINUTE_SECONDS
-    val timesString = StringBuilder()
-    if (days > 0) {
-        val daysString = String.format(resources.getString(R.string.days_letter), days)
-        timesString.append("$daysString ")
-    }
-
-    if (hours > 0) {
-        val hoursString = String.format(resources.getString(R.string.hours_letter), hours)
-        timesString.append("$hoursString ")
-    }
-
-    if (minutes > 0) {
-        val minutesString = String.format(resources.getString(R.string.minutes_letter), minutes)
-        timesString.append("$minutesString ")
-    }
-
-    if (seconds > 0) {
-        val secondsString = String.format(resources.getString(R.string.seconds_letter), seconds)
-        timesString.append(secondsString)
-    }
-
-    var result = timesString.toString().trim()
-    if (result.isEmpty()) {
-        result = String.format(resources.getString(R.string.minutes_letter), 0)
-    }
-    return result
-}
-
-fun Context.getFormattedMinutes(minutes: Int, showBefore: Boolean = true) = getFormattedSeconds(if (minutes == -1) minutes else minutes * 60, showBefore)
 
 fun Context.getFormattedSeconds(seconds: Int, showBefore: Boolean = true) = when (seconds) {
     -1 -> getString(R.string.no_reminder)
@@ -731,75 +386,6 @@ fun Context.getDefaultAlarmTitle(type: Int): String {
 }
 
 fun Context.getDefaultAlarmSound(type: Int) = AlarmSound(0, getDefaultAlarmTitle(type), RingtoneManager.getDefaultUri(type).toString())
-
-fun Context.grantReadUriPermission(uriString: String) {
-    try {
-        // ensure custom reminder sounds play well
-        grantUriPermission(
-            "com.android.systemui",
-            uriString.toUri(),
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
-    } catch (_: Exception) {
-    }
-}
-
-fun Context.storeNewYourAlarmSound(resultData: Intent): AlarmSound {
-    val uri = resultData.data
-    var filename = getFilenameFromUri(uri!!)
-    if (filename.isEmpty()) {
-        filename = getString(R.string.alarm)
-    }
-
-    val token = object : TypeToken<ArrayList<AlarmSound>>() {}.type
-    val yourAlarmSounds = Gson().fromJson<ArrayList<AlarmSound>>(baseConfig.yourAlarmSounds, token)
-        ?: ArrayList()
-    val newAlarmSoundId = (yourAlarmSounds.maxByOrNull { it.id }?.id ?: YOUR_ALARM_SOUNDS_MIN_ID) + 1
-    val newAlarmSound = AlarmSound(newAlarmSoundId, filename, uri.toString())
-    if (yourAlarmSounds.firstOrNull { it.uri == uri.toString() } == null) {
-        yourAlarmSounds.add(newAlarmSound)
-    }
-
-    baseConfig.yourAlarmSounds = Gson().toJson(yourAlarmSounds)
-
-    val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    contentResolver.takePersistableUriPermission(uri, takeFlags)
-
-    return newAlarmSound
-}
-
-fun Context.saveImageRotation(path: String, degrees: Int): Boolean {
-    return if (!needsStupidWritePermissions(path)) {
-        saveExifRotation(ExifInterface(path), degrees)
-        true
-    } else {
-        val documentFile = getSomeDocumentFile(path)
-        if (documentFile != null) {
-            val parcelFileDescriptor =
-                contentResolver.openFileDescriptor(documentFile.uri, "rw")
-            val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
-            saveExifRotation(ExifInterface(fileDescriptor), degrees)
-            true
-        } else {
-            false
-        }
-    }
-}
-
-fun saveExifRotation(exif: ExifInterface, degrees: Int) {
-    val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-    val orientationDegrees = (orientation.degreesFromOrientation() + degrees) % 360
-    exif.setAttribute(ExifInterface.TAG_ORIENTATION, orientationDegrees.orientationFromDegrees())
-    exif.saveAttributes()
-}
-
-fun Context.getLaunchIntent() = packageManager.getLaunchIntentForPackage(baseConfig.appId)
-
-fun Context.getCanAppBeUpgraded() = proPackages.contains(baseConfig.appId.removeSuffix(".debug").removePrefix("com.goodwy."))
-
-fun Context.getStoreUrl() = "https://play.google.com/store/apps/details?id=${packageName.removeSuffix(".debug")}"
-
-fun Context.getRuStoreUrl() = "https://www.rustore.ru/catalog/app/${packageName.removeSuffix(".debug")}"
 
 fun Context.getTimeFormat() = if (baseConfig.use24HourFormat) TIME_FORMAT_24 else TIME_FORMAT_12
 
@@ -1029,9 +615,7 @@ fun Context.getTextSizeSmall() = when (baseConfig.fontSize) {
 val Context.telecomManager: TelecomManager get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 val Context.notificationManager: NotificationManager get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-val Context.shortcutManager: ShortcutManager get() = getSystemService(ShortcutManager::class.java) as ShortcutManager
 
-val Context.portrait get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
 val Context.usableScreenSize: Point
     get() {
@@ -1046,18 +630,14 @@ val Context.realScreenSize: Point
         windowManager.defaultDisplay.getRealSize(size)
         return size
     }
-
-// we need the Default Dialer functionality only in Simple Dialer and in Simple Contacts for now
 fun Context.isDefaultDialer(): Boolean {
-    return if (!packageName.startsWith("com.smsnew.messenger.contacts") && !packageName.startsWith("com.smsnew.messenger.dialer") &&
-        !packageName.startsWith("com.smsnew.messenger.contacts") && !packageName.startsWith("com.smsnew.messenger.phone")) {
-        true
-    } else if ((packageName.startsWith("com.smsnew.messenger.contacts") || packageName.startsWith("com.smsnew.messenger.dialer") ||
-            packageName.startsWith("com.smsnew.messenger.contacts") || packageName.startsWith("com.smsnew.messenger.phone")) && isQPlus()) {
+    return if (isQPlus()) {
         val roleManager = getSystemService(RoleManager::class.java)
-        roleManager!!.isRoleAvailable(RoleManager.ROLE_DIALER) && roleManager.isRoleHeld(RoleManager.ROLE_DIALER)
+        roleManager != null &&
+            roleManager.isRoleAvailable(RoleManager.ROLE_SMS) &&
+            roleManager.isRoleHeld(RoleManager.ROLE_SMS)
     } else {
-        telecomManager.defaultDialerPackage == packageName
+        android.provider.Telephony.Sms.getDefaultSmsPackage(this) == packageName
     }
 }
 
@@ -1083,6 +663,8 @@ fun Context.getBlockedNumbersWithContact(callback: (ArrayList<BlockedNumber>) ->
         val blockedNumbers = ArrayList<BlockedNumber>()
         if (!isDefaultDialer()) {
             callback(blockedNumbers)
+            return@getContactsHasMap // Fix 1: without this return, code below runs even when
+            // not authorized — causes SecurityException and double callback fire
         }
 
         val uri = BlockedNumbers.CONTENT_URI
@@ -1137,32 +719,57 @@ fun Context.getBlockedNumbers(): ArrayList<BlockedNumber> {
 }
 
 fun Context.addBlockedNumber(number: String): Boolean {
-    ContentValues().apply {
-        put(BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
-        if (number.isPhoneNumber()) {
-            put(BlockedNumbers.COLUMN_E164_NUMBER, PhoneNumberUtils.normalizeNumber(number))
-        }
-        try {
-            contentResolver.insert(BlockedNumbers.CONTENT_URI, this)
-        } catch (e: Exception) {
-            showErrorToast(e)
-            return false
-        }
+    // Fix 2a: without this guard, insert() throws SecurityException silently
+    // when app is not the default SMS app
+    if (!isDefaultDialer()) {
+        Log.e("BLOCK", "addBlockedNumber: not default SMS app, skipping")
+        return false
     }
-    return true
+    // Fix 2b: moved out of .apply{} — return inside apply doesn't return the outer function,
+    // so the old code always returned true even when insert failed
+    return try {
+        val values = ContentValues().apply {
+            put(BlockedNumbers.COLUMN_ORIGINAL_NUMBER, number)
+            // Only normalize real phone numbers — wildcard patterns like "+91*"
+            // must NOT be passed to PhoneNumberUtils as it corrupts them
+            if (number.isPhoneNumber()) {
+                put(BlockedNumbers.COLUMN_E164_NUMBER, PhoneNumberUtils.normalizeNumber(number))
+            }
+        }
+        contentResolver.insert(BlockedNumbers.CONTENT_URI, values)
+        true
+    } catch (e: Exception) {
+        Log.e("BLOCK", "addBlockedNumber failed: \${e.message}")
+        showErrorToast(e)
+        false
+    }
 }
 
 fun Context.deleteBlockedNumber(number: String): Boolean {
-    val selection = "${BlockedNumbers.COLUMN_ORIGINAL_NUMBER} = ?"
-    val selectionArgs = arrayOf(number)
-
-    return if (isNumberBlocked(number)) {
-        val deletedRowCount = contentResolver.delete(BlockedNumbers.CONTENT_URI, selection, selectionArgs)
-
-        deletedRowCount > 0
-    } else {
-        true
+    // Fix 3: old code deleted by exact COLUMN_ORIGINAL_NUMBER string match.
+    // But stored number may be E164/normalized (e.g. "+911234567890") while
+    // caller passes "1234567890" — SQL finds 0 rows, returns false silently.
+    // Solution: look up the real row ID first using same matching as isNumberBlocked,
+    // then delete by ID which is always exact.
+    val blockedNumbers = getBlockedNumbers()
+    if (!isNumberBlocked(number, blockedNumbers)) {
+        return true // already not blocked, nothing to do
     }
+
+    val numberToCompare = number.trimToComparableNumber()
+    val stripped = PhoneNumberUtils.stripSeparators(number)
+
+    val matchedEntry = blockedNumbers.firstOrNull {
+        numberToCompare == it.numberToCompare ||
+            numberToCompare == it.number ||
+            stripped == it.number
+    } ?: return false
+
+    val deleteUri = android.net.Uri.withAppendedPath(
+        BlockedNumbers.CONTENT_URI, matchedEntry.id.toString()
+    )
+    val deletedRowCount = contentResolver.delete(deleteUri, null, null)
+    return deletedRowCount > 0
 }
 
 fun Context.isNumberBlocked(number: String, blockedNumbers: ArrayList<BlockedNumber> = getBlockedNumbers()): Boolean {
@@ -1175,22 +782,6 @@ fun Context.isNumberBlocked(number: String, blockedNumbers: ArrayList<BlockedNum
     } || isNumberBlockedByPattern(number, blockedNumbers)
 }
 
-//fun Context.isNumberBlockedByPattern(number: String, blockedNumbers: ArrayList<BlockedNumber> = getBlockedNumbers()): Boolean {
-//    for (blockedNumber in blockedNumbers) {
-//        val num = blockedNumber.number
-//        if (num.isBlockedNumberPattern()) {
-//            val pattern = num.replace("+", "\\+").replace("*", ".*")
-//            if (number.matches(pattern.toRegex())) {
-//                return true
-//            }
-//        }
-//    }
-//    return false
-//}
-
-//Fix: java.util.regex.PatternSyntaxException: Incorrectly nested parentheses in regexp pattern near index 18
-//OR CONSEQUENTIAL DAMAGES
-//#   .* (INCLUDING
 fun Context.isNumberBlockedByPattern(number: String, blockedNumbers: ArrayList<BlockedNumber> = getBlockedNumbers()): Boolean {
     for (blockedNumber in blockedNumbers) {
         val num = blockedNumber.number
@@ -1240,21 +831,6 @@ fun Context.getPhoneNumberTypeText(type: Int, label: String): String {
     }
 }
 
-fun Context.updateBottomTabItemColors(view: View?, isActive: Boolean, drawableId: Int? = null) {
-    val color = if (isActive) {
-        getProperPrimaryColor()
-    } else {
-        getProperTextColor().adjustAlpha(0.6f)
-    }
-
-    if (drawableId != null) {
-        val drawable = ResourcesCompat.getDrawable(resources, drawableId, theme)
-        view?.findViewById<ImageView>(R.id.tab_item_icon)?.setImageDrawable(drawable)
-    }
-
-    view?.findViewById<ImageView>(R.id.tab_item_icon)?.applyColorFilter(color)
-    view?.findViewById<TextView>(R.id.tab_item_label)?.setTextColor(color)
-}
 
 fun Context.sendEmailIntent(recipient: String) {
     Intent(Intent.ACTION_SENDTO).apply {
@@ -1303,57 +879,12 @@ fun Context.openRequestExactAlarmSettings(appId: String) {
     }
 }
 
-fun Context.canUseFullScreenIntent(): Boolean {
-    return !isUpsideDownCakePlus() || notificationManager.canUseFullScreenIntent()
-}
-
-@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-fun Context.openFullScreenIntentSettings(appId: String) {
-    if (isUpsideDownCakePlus()) {
-        val uri = Uri.fromParts("package", appId, null)
-        val intent = Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
-        intent.data = uri
-        startActivity(intent)
-    }
-}
-
-fun Context.getDayOfWeekString(dayOfWeek: Int): String {
-    val dayOfWeekResId = when (dayOfWeek) {
-        DateTimeConstants.MONDAY -> R.string.monday
-        DateTimeConstants.TUESDAY -> R.string.tuesday
-        DateTimeConstants.WEDNESDAY -> R.string.wednesday
-        DateTimeConstants.THURSDAY -> R.string.thursday
-        DateTimeConstants.FRIDAY -> R.string.friday
-        DateTimeConstants.SATURDAY -> R.string.saturday
-        DateTimeConstants.SUNDAY -> R.string.sunday
-        else -> throw IllegalArgumentException("Invalid day: $dayOfWeek")
-    }
-
-    return getString(dayOfWeekResId)
-}
 
 fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.findActivity()
     else -> null
 }
-
-fun Context.formatWithBadge(
-    @StringRes labelRes: Int,
-    @StringRes badgeRes: Int,
-    vararg labelArgs: Any
-): CharSequence {
-    val label = if (labelArgs.isEmpty()) getString(labelRes)
-    else getString(labelRes, *labelArgs)
-
-    val badge = BidiFormatter.getInstance().unicodeWrap(getString(badgeRes))
-    return getString(R.string.label_with_badge, label, badge)
-}
-
-fun Context.formatWithDeprecatedBadge(
-    @StringRes labelRes: Int,
-    vararg labelArgs: Any
-): CharSequence = formatWithBadge(labelRes, R.string.badge_deprecated, *labelArgs)
 
 fun Context.applyFontToTextView(
     textView: TextView,
@@ -1407,20 +938,20 @@ fun Context.getRelationTypeText(type: Int, label: String): String {
         getString(
             when (type) {
                 // Relation.TYPE_CUSTOM   -> stringsR.string.custom
-                Relation.TYPE_ASSISTANT   -> stringsR.string.relation_assistant_g
-                Relation.TYPE_BROTHER     -> stringsR.string.relation_brother_g
-                Relation.TYPE_CHILD       -> stringsR.string.relation_child_g
+                Relation.TYPE_ASSISTANT -> stringsR.string.relation_assistant_g
+                Relation.TYPE_BROTHER -> stringsR.string.relation_brother_g
+                Relation.TYPE_CHILD -> stringsR.string.relation_child_g
                 Relation.TYPE_DOMESTIC_PARTNER -> stringsR.string.relation_domestic_partner_g
-                Relation.TYPE_FATHER      -> stringsR.string.relation_father_g
-                Relation.TYPE_FRIEND      -> stringsR.string.relation_friend_g
-                Relation.TYPE_MANAGER     -> stringsR.string.relation_manager_g
-                Relation.TYPE_MOTHER      -> stringsR.string.relation_mother_g
-                Relation.TYPE_PARENT      -> stringsR.string.relation_parent_g
-                Relation.TYPE_PARTNER     -> stringsR.string.relation_partner_g
+                Relation.TYPE_FATHER -> stringsR.string.relation_father_g
+                Relation.TYPE_FRIEND -> stringsR.string.relation_friend_g
+                Relation.TYPE_MANAGER -> stringsR.string.relation_manager_g
+                Relation.TYPE_MOTHER -> stringsR.string.relation_mother_g
+                Relation.TYPE_PARENT -> stringsR.string.relation_parent_g
+                Relation.TYPE_PARTNER -> stringsR.string.relation_partner_g
                 Relation.TYPE_REFERRED_BY -> stringsR.string.relation_referred_by_g
-                Relation.TYPE_RELATIVE    -> stringsR.string.relation_relative_g
-                Relation.TYPE_SISTER      -> stringsR.string.relation_sister_g
-                Relation.TYPE_SPOUSE      -> stringsR.string.relation_spouse_g
+                Relation.TYPE_RELATIVE -> stringsR.string.relation_relative_g
+                Relation.TYPE_SISTER -> stringsR.string.relation_sister_g
+                Relation.TYPE_SPOUSE -> stringsR.string.relation_spouse_g
 
                 // Relation types defined in vCard 4.0
                 ContactRelation.TYPE_CONTACT -> stringsR.string.relation_contact_g
@@ -1489,43 +1020,6 @@ fun Context.getEventTypeText(type: Int, label: String): String {
 }
 
 
-fun Context.getTextFromClipboard(): CharSequence? {
-    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = clipboard.primaryClip
-    return if (clip != null && clip.itemCount > 0) {
-        clip.getItemAt(0).coerceToText(this)
-    } else null
-}
-
-fun Context.getScreenSlideAnimationText() = getString(
-    when (baseConfig.screenSlideAnimation) {
-        1 -> stringsR.string.screen_slide_animation_zoomout
-        2 -> stringsR.string.screen_slide_animation_depth
-        else -> R.string.no
-    }
-)
-
-fun Context.getNavigationBarStyleText() = getString(
-    when (baseConfig.bottomNavigationBar) {
-        true -> stringsR.string.bottom
-        else -> stringsR.string.top
-    }
-)
-
-fun Context.startCallPendingIntent(recipient: String, key: String = ""): PendingIntent {
-    return PendingIntent.getActivity(
-        this,
-        0,
-        Intent(Intent.ACTION_CALL, Uri.fromParts("tel", recipient, null))
-            .putExtra(IS_RIGHT_APP, key),
-        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-}
-
-fun Context.sendSMSPendingIntent(recipient: String): PendingIntent {
-    return PendingIntent.getActivity(this, 0,
-        Intent(Intent.ACTION_SENDTO, Uri.fromParts("smsto", recipient, null)), PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-}
-
 fun Context.getLetterBackgroundColors(): ArrayList<Long> {
     return when (baseConfig.contactColorList) {
         LBC_ORIGINAL -> letterBackgroundColors
@@ -1586,32 +1080,9 @@ suspend fun getSystemProperty(propName: String): String? = withContext(Dispatche
     return@withContext line
 }
 
-fun Context.isPlayStoreInstalled(): Boolean {
-    return isPackageInstalled("com.android.vending")
-        || isPackageInstalled("com.google.market")
-}
-
-fun Context.isRuStoreInstalled(): Boolean {
-    return isPackageInstalled("ru.vk.store")
-}
-
 fun Context.isPro() = baseConfig.isPro
 
-
-
-
 fun Context.appPrefix(): String = if (isNewApp()) "dev." else "com."
-
-fun Context.isTalkBackOn(): Boolean {
-    val am = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-    if (am.isEnabled) {
-        val serviceInfoList =
-            am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN)
-        if (serviceInfoList.isNotEmpty())
-            return true
-    }
-    return false
-}
 
 fun Context.sysLocale(): Locale? {
     val config = this.resources.configuration
@@ -1619,27 +1090,5 @@ fun Context.sysLocale(): Locale? {
 }
 
 private fun getSystemLocale(config: Configuration) = config.locales.get(0)
-
-
-
-fun Context.myMailRes(): Int {
-    return when {
-        packageName.startsWith("com.smsnew.messenger") -> R.string.my_email
-        packageName.startsWith("com.smsnew.messenger") -> R.string.my_email_old
-        else -> R.string.my_fake_email
-    }
-}
-
-fun Context.getMyMailString(): String {
-    return getString(myMailRes())
-}
-
-fun Context.getDividerColor(): Int {
-    return if (isDarkTheme() && (isSystemInDarkMode() || isAutoTheme())) {
-        "#444444".toColorInt()
-    } else {
-        "#E0E0E0".toColorInt()
-    }
-}
 
 fun Context.isNewApp(): Boolean = packageName.startsWith("com.smsnew.messenger.", true)
