@@ -269,11 +269,11 @@ open class BaseConfig(val context: Context) {
         set(useDividers) = prefs.edit { putBoolean(USE_DIVIDERS, useDividers) }
 
     var useColoredContacts: Boolean
-        get() = prefs.getBoolean(USE_COLORED_CONTACTS, false)
+        get() = prefs.getBoolean(USE_COLORED_CONTACTS, true)
         set(useColoredContacts) = prefs.edit { putBoolean(USE_COLORED_CONTACTS, useColoredContacts) }
 
     var contactColorList: Int
-        get() = prefs.getInt(CONTACT_COLOR_LIST, LBC_ANDROID)
+        get() = prefs.getInt(CONTACT_COLOR_LIST, LBC_ARC)
         set(contactsColorList) = prefs.edit { putInt(CONTACT_COLOR_LIST, contactsColorList) }
 
     var isGlobalThemeEnabled: Boolean
@@ -444,7 +444,7 @@ open class BaseConfig(val context: Context) {
         val format = DateFormat.getDateFormat(context)
         val pattern = (format as SimpleDateFormat).toLocalizedPattern()
         return when (pattern.lowercase().replace(" ", "")) {
-            "d.M.y" -> DATE_FORMAT_ONE
+            "d.M.y" -> DATE_FORMAT_FIVE
             "dd/mm/y" -> DATE_FORMAT_TWO
             "mm/dd/y" -> DATE_FORMAT_THREE
             "y-mm-dd" -> DATE_FORMAT_FOUR
@@ -453,7 +453,7 @@ open class BaseConfig(val context: Context) {
             "mm-dd-y" -> DATE_FORMAT_SEVEN
             "dd-mm-y" -> DATE_FORMAT_EIGHT
             "y.mm.dd" -> DATE_FORMAT_TEN
-            else -> DATE_FORMAT_ONE
+            else -> DATE_FORMAT_FIVE
         }
     }
 

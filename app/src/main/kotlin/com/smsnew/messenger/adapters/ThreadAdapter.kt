@@ -369,7 +369,7 @@ class ThreadAdapter(
     private fun showLinkPopupMenu(context: Context, url: String, view: View) {
         val wrapper: Context = ContextThemeWrapper(activity, activity.getPopupMenuTheme())
         val popupMenu = PopupMenu(wrapper, view, Gravity.START)
-        val text = url//.toUri().schemeSpecificPart //https://github.com/Goodwy/Messages/issues/91
+        val text = url
         val (title, icon) = getActionTitleAndIcon(url)
 
         // Use only 24dp icons

@@ -15,7 +15,6 @@
             android:id="@+id/settings_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/menu_settings"
             app:title="@string/settings"
             app:titleTextAppearance="@style/AppTheme.ActionBar.TitleTextStyle" />
     </com.smsnew.messenger.commonsLibCustom.views.MyAppBarLayout>
@@ -35,11 +34,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.smsnew.messenger.commonsLibCustom.views.PurchaseThankYouItem
-                android:id="@+id/settingsPurchaseThankYouHolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"/>
 
             <TextView
                 android:id="@+id/settings_appearance_label"
@@ -59,8 +53,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+                        <RelativeLayout
+                            android:id="@+id/customizationThemeHolder"
+                            style="@style/SettingsHolderStyle">
 
+                            <com.smsnew.messenger.commonsLibCustom.views.MyTextView
+                                android:id="@+id/customization_theme_label"
+                                style="@style/SettingsTextLabelStyle"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@+id/customization_theme"
+                                android:layout_marginEnd="8dp"
+                                android:text="@string/theme"/>
+
+                            <com.smsnew.messenger.commonsLibCustom.views.MyTextView
+                                android:id="@+id/settings_customize_colors_summary"
+                                style="@style/SettingsTextSummaryStyle"
+                                android:layout_below="@+id/customization_theme_label"
+                                android:layout_marginTop="@dimen/settings_summary_top_margin"
+                                android:layout_marginEnd="68dp"
+                                android:text="@string/pref_theme_summary"
+                                android:visibility="gone"/>
+
+                            <com.smsnew.messenger.commonsLibCustom.views.MyTextView
+                                android:id="@+id/customization_theme"
+                                style="@style/SettingsTextValueStyle"
+                                android:maxWidth="@dimen/settings_value_width_long"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/settings_margin"
+                                tools:text="@string/auto_light_dark_theme"/>
+                        </RelativeLayout>
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_customize_colors_holder"
                         style="@style/SettingsHolderStyle">
 
@@ -105,17 +128,20 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_colored_contacts_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
                         <com.smsnew.messenger.commonsLibCustom.views.MyMaterialSwitch
                             android:id="@+id/settings_colored_contacts"
                             style="@style/SettingsSwitchStyle"
+                            android:checked="true"
                             android:text="@string/colored_contacts"
                             app:switchPadding="@dimen/bigger_margin" />
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsContactColorListHolder"
                         style="@style/SettingsHolderStyle"
                         android:paddingEnd="@dimen/medium_margin"
@@ -284,6 +310,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsManageBlockedKeywordsHolder"
                         style="@style/SettingsHolderStyle">
 
@@ -313,6 +340,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsUseSpeechToTextHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -345,6 +373,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_change_date_time_format_holder"
                         style="@style/SettingsHolderStyle">
 
@@ -368,6 +397,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_use_english_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -380,6 +410,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_language_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -406,6 +437,7 @@
                 android:id="@+id/settingsSwipeGesturesLabel"
                 style="@style/SettingsSectionLabelStyle"
                 android:text="@string/swipe_gestures"
+                android:visibility="gone"
                 tools:textColor="@color/primary"/>
 
             <androidx.cardview.widget.CardView
@@ -418,6 +450,7 @@
                     android:id="@+id/settingsSwipeGesturesWrapper"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -545,6 +578,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsSkipDeleteConfirmationHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -661,6 +695,7 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_thread_top_style_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -730,6 +765,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsTextAlignmentMessageHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -822,6 +858,7 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_send_on_enter_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -834,6 +871,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsSoundOnOutGoingMessagesHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -846,6 +884,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_enable_delivery_reports_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -858,6 +897,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_show_character_counter_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -870,6 +910,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settings_use_simple_characters_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -904,6 +945,17 @@
                             app:switchPadding="@dimen/bigger_margin" />
 
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/settings_24hour_message"
+                        style="@style/SettingsHolderSwitchStyle">
+
+                        <com.smsnew.messenger.commonsLibCustom.views.MyMaterialSwitch
+                            android:id="@+id/settings_24hour_after_removed_otp_message"
+                            style="@style/SettingsSwitchStyle"
+                            android:text="@string/_24_hour_after_otp_messages_delete"
+                            app:switchPadding="@dimen/bigger_margin" />
+
+                    </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/settings_mms_file_size_limit_holder"
@@ -932,12 +984,14 @@
                 android:id="@+id/settingsTopAppBarLabel"
                 style="@style/SettingsSectionLabelStyle"
                 android:text="@string/top_app_bar"
+                android:visibility="gone"
                 tools:textColor="@color/primary"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/settingsTopAppBarHolder"
                 style="@style/SettingsSectionHolder"
                 app:cardCornerRadius="@dimen/activity_margin"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -973,6 +1027,7 @@
 
                     <RelativeLayout
                         android:id="@+id/settingsShowSearchBarHolder"
+                        android:visibility="gone"
                         style="@style/SettingsHolderSwitchStyle">
 
                         <com.smsnew.messenger.commonsLibCustom.views.MyMaterialSwitch
@@ -999,12 +1054,14 @@
                 android:id="@+id/settingsListViewLabel"
                 style="@style/SettingsSectionLabelStyle"
                 android:text="@string/list_view"
+                android:visibility="gone"
                 tools:textColor="@color/primary"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/settingsListViewHolder"
                 style="@style/SettingsSectionHolder"
                 app:cardCornerRadius="@dimen/activity_margin"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -1155,6 +1212,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/settingsArchivedMessagesLabel"
                 style="@style/SettingsSectionLabelStyle"
                 android:text="@string/archived_conversations"
@@ -1164,6 +1222,7 @@
                 android:id="@+id/settingsArchivedMessagesHolder"
                 style="@style/SettingsSectionHolder"
                 app:cardCornerRadius="@dimen/activity_margin"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -1182,12 +1241,14 @@
                 android:id="@+id/settingsRecycleBinLabel"
                 style="@style/SettingsSectionLabelStyle"
                 android:text="@string/recycle_bin"
+                android:visibility="gone"
                 tools:textColor="@color/primary"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/settingsRecycleBinHolder"
                 style="@style/SettingsSectionHolder"
                 app:cardCornerRadius="@dimen/activity_margin"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -1315,92 +1376,6 @@
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/import_messages"/>
 
-                    </RelativeLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/settingsOtherLabel"
-                style="@style/SettingsSectionLabelStyle"
-                android:text="@string/other"
-                tools:textColor="@color/primary"/>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/settingsOtherHolder"
-                style="@style/SettingsSectionHolder"
-                android:layout_marginBottom="@dimen/secondary_fab_bottom_margin"
-                app:cardCornerRadius="@dimen/activity_margin"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:id="@+id/settingsOtherWrapper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/settingsTipJarHolder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/smaller_margin"
-                        android:layout_marginBottom="@dimen/small_margin"
-                        android:layout_marginHorizontal="@dimen/smaller_margin"
-                        android:background="@drawable/search_bg"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <RelativeLayout
-                            android:id="@+id/settingsTipJarWrapper"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/smaller_margin"
-                            android:paddingEnd="@dimen/smaller_margin"
-                            android:paddingTop="@dimen/medium_margin"
-                            android:paddingBottom="@dimen/medium_margin"
-                            android:background="@drawable/ripple_all_corners_11dp">
-
-                            <com.smsnew.messenger.commonsLibCustom.views.MyTextView
-                                android:id="@+id/settingsTipJar"
-                                style="@style/SettingsTextLabelStyle"
-                                android:layout_centerVertical="true"
-                                android:text="@string/tip_jar"/>
-
-                            <ImageView
-                                android:id="@+id/settingsTipJarChevron"
-                                style="@style/SettingsChevronStyle"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@string/tip_jar"/>
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/settings_about_holder"
-                        style="@style/SettingsHolderStyle">
-
-                        <com.smsnew.messenger.commonsLibCustom.views.MyTextView
-                            android:id="@+id/settings_about_label"
-                            style="@style/SettingsTextLabelStyle"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@+id/settings_about_version"
-                            android:layout_marginEnd="@dimen/larger_margin"
-                            android:text="@string/about"/>
-
-                        <com.smsnew.messenger.commonsLibCustom.views.MyTextView
-                            android:id="@+id/settings_about_version"
-                            style="@style/SettingsTextValueStyle"
-                            android:maxWidth="@dimen/settings_value_width_long"
-                            android:layout_toStartOf="@+id/settings_about_chevron"
-                            android:layout_centerVertical="true"
-                            tools:text="Version: 1.0.0"/>
-
-                        <ImageView
-                            android:id="@+id/settings_about_chevron"
-                            style="@style/SettingsChevronStyle"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="@string/about"/>
                     </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

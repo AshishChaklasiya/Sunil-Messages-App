@@ -14,6 +14,7 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName
 import android.provider.ContactsContract.Data
 import android.provider.ContactsContract.PhoneLookup
 import android.text.TextUtils
+import android.util.Log
 import android.util.SparseArray
 import android.widget.ImageView
 import android.widget.TextView
@@ -40,16 +41,16 @@ class SimpleContactsHelper(val context: Context) {
             SimpleContact.collator = Collator.getInstance(context.sysLocale())
             val names = getContactNames(favoritesOnly)
             var allContacts = getContactPhoneNumbers(favoritesOnly)
+            val namesMap = names.associateBy { it.rawId }
             allContacts.forEach {
-                val contactId = it.rawId
-                val contact = names.firstOrNull { it.rawId == contactId }
+                val contact = namesMap[it.rawId]
                 val name = contact?.name ?: it.phoneNumbers.firstOrNull()?.value
                 if (name != null) {
                     it.name = name
                 }
 
                 val photoUri = contact?.photoUri
-                if (photoUri != null && photoUri != "") {
+                if (!photoUri.isNullOrEmpty()) {
                     it.photoUri = photoUri
                 }
             }
@@ -59,52 +60,43 @@ class SimpleContactsHelper(val context: Context) {
                 it.phoneNumbers.first().normalizedNumber.substring(startIndex)
             }.distinctBy { it.rawId }.toMutableList() as ArrayList<SimpleContact>
 
-            // if there are duplicate contacts with the same name, while the first one has phone numbers 1234 and 4567, second one has only 4567,
-            // use just the first contact
-            val contactsToRemove = ArrayList<SimpleContact>()
-            allContacts.groupBy { it.name }.forEach {
-                val contacts = it.value.toMutableList() as ArrayList<SimpleContact>
-                if (contacts.size > 1) {
-                    contacts.sortByDescending { it.phoneNumbers.size }
-                    if (contacts.any { it.phoneNumbers.size == 1 } && contacts.any { it.phoneNumbers.size > 1 }) {
-                        val multipleNumbersContact = contacts.first()
-                        contacts.subList(1, contacts.size).forEach { contact ->
+            val contactsToRemove = HashSet<SimpleContact>()
+            allContacts.groupBy { it.name }.forEach { (_, group) ->
+                if (group.size > 1) {
+                    val sorted = group.sortedByDescending { it.phoneNumbers.size }
+                    if (sorted.any { it.phoneNumbers.size == 1 } && sorted.any { it.phoneNumbers.size > 1 }) {
+                        val multipleNumbersContact = sorted.first()
+                        sorted.subList(1, sorted.size).forEach { contact ->
                             if (contact.phoneNumbers.all { multipleNumbersContact.doesContainPhoneNumber(it.normalizedNumber) }) {
-                                val contactToRemove = allContacts.firstOrNull { it.rawId == contact.rawId }
-                                if (contactToRemove != null) {
-                                    contactsToRemove.add(contactToRemove)
-                                }
+                                contactsToRemove.add(contact)
                             }
                         }
                     }
                 }
             }
+            allContacts.removeAll(contactsToRemove)
 
-            contactsToRemove.forEach {
-                allContacts.remove(it)
-            }
+            // Build map ONCE for events/organizations - O(1) lookup
+            val contactsMap = HashMap<Int, SimpleContact>()
+            allContacts.forEach { contactsMap[it.rawId] = it }
 
             val birthdays = getContactEvents(true)
-            var size = birthdays.size
-            for (i in 0 until size) {
-                val key = birthdays.keyAt(i)
-                allContacts.firstOrNull { it.rawId == key }?.birthdays = birthdays.valueAt(i)
+            for (i in 0 until birthdays.size) {
+                contactsMap[birthdays.keyAt(i)]?.birthdays = birthdays.valueAt(i)
             }
 
             val anniversaries = getContactEvents(false)
-            size = anniversaries.size
-            for (i in 0 until size) {
-                val key = anniversaries.keyAt(i)
-                allContacts.firstOrNull { it.rawId == key }?.anniversaries = anniversaries.valueAt(i)
+            for (i in 0 until anniversaries.size) {
+                contactsMap[anniversaries.keyAt(i)]?.anniversaries = anniversaries.valueAt(i)
             }
 
             val organizations = getContactOrganization()
-            size = organizations.size
-            for (i in 0 until size) {
-                val key = organizations.keyAt(i)
-                val contact = allContacts.firstOrNull { it.rawId == key }
-                contact?.company = organizations.valueAt(i).company
-                contact?.jobPosition = organizations.valueAt(i).jobPosition
+            for (i in 0 until organizations.size) {
+                val org = organizations.valueAt(i)
+                contactsMap[organizations.keyAt(i)]?.apply {
+                    company = org.company
+                    jobPosition = org.jobPosition
+                }
             }
 
             allContacts.sort()
@@ -355,6 +347,7 @@ class SimpleContactsHelper(val context: Context) {
         val canvas = Canvas(bitmap)
         val view = TextView(context)
         view.layout(0, 0, size, size)
+        Log.e("BaseConfig", "getColoredCompanyIcon:2 "+context.baseConfig.useColoredContacts )
 
         val backgroundPaint = if (context.baseConfig.useColoredContacts) {
             val letterBackgroundColors = context.getLetterBackgroundColors()
@@ -403,6 +396,7 @@ class SimpleContactsHelper(val context: Context) {
         val output = createBitmap(size, size)
         val canvas = Canvas(output)
         val paint = Paint()
+        Log.e("BaseConfig", "getColoredCompanyIcon: 3"+context.baseConfig.useColoredContacts )
 
         val backgroundPaint = if (context.baseConfig.useColoredContacts) {
             val letterBackgroundColors = context.getLetterBackgroundColors()
@@ -438,6 +432,7 @@ class SimpleContactsHelper(val context: Context) {
     @SuppressLint("UseCompatLoadingForDrawables")
     fun getColoredContactIcon(title: String): Drawable {
         val icon = context.resources.getDrawable(R.drawable.placeholder_contact, context.theme)
+        Log.e("BaseConfig", "getColoredCompanyIcon: 34"+context.baseConfig.useColoredContacts )
         if (context.baseConfig.useColoredContacts) {
             val letterBackgroundColors = context.getLetterBackgroundColors()
             val bgColor = letterBackgroundColors[abs(title.hashCode()) % letterBackgroundColors.size].toInt()
@@ -449,6 +444,8 @@ class SimpleContactsHelper(val context: Context) {
     @SuppressLint("UseCompatLoadingForDrawables")
     fun getColoredGroupIcon(title: String): Drawable {
         val icon = context.resources.getDrawable(R.drawable.placeholder_group, context.theme)
+        Log.e("BaseConfig", "getColoredCompanyIcon: 5"+context.baseConfig.useColoredContacts )
+
         if (context.baseConfig.useColoredContacts) {
             val letterBackgroundColors = context.getLetterBackgroundColors()
             val bgColor = letterBackgroundColors[abs(title.hashCode()) % letterBackgroundColors.size].toInt()
@@ -460,6 +457,7 @@ class SimpleContactsHelper(val context: Context) {
     @SuppressLint("UseCompatLoadingForDrawables")
     fun getColoredCompanyIcon(title: String): Drawable {
         val icon = context.resources.getDrawable(R.drawable.placeholder_company, context.theme)
+        Log.e("BaseConfig", "getColoredCompanyIcon: "+context.baseConfig.useColoredContacts )
         if (context.baseConfig.useColoredContacts) {
             val letterBackgroundColors = context.getLetterBackgroundColors()
             val bgColor = letterBackgroundColors[abs(title.hashCode()) % letterBackgroundColors.size].toInt()

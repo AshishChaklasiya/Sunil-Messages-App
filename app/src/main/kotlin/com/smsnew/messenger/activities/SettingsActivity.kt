@@ -1,6 +1,7 @@
 package com.smsnew.messenger.activities
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -14,18 +15,73 @@ import com.smsnew.messenger.commonsLibCustom.activities.ManageBlockedNumbersActi
 import com.smsnew.messenger.commonsLibCustom.dialogs.*
 import com.smsnew.messenger.commonsLibCustom.extensions.*
 import com.smsnew.messenger.commonsLibCustom.helpers.*
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.COL_ACCENT_COLOR
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.COL_APP_ICON_COLOR
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.COL_BACKGROUND_COLOR
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.COL_PRIMARY_COLOR
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.COL_TEXT_COLOR
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.COL_THEME_TYPE
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.GLOBAL_THEME_AUTO
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.GLOBAL_THEME_CUSTOM
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.GLOBAL_THEME_DISABLED
+import com.smsnew.messenger.commonsLibCustom.helpers.MyContentProvider.GLOBAL_THEME_SYSTEM
+import com.smsnew.messenger.commonsLibCustom.models.GlobalConfig
+import com.smsnew.messenger.commonsLibCustom.models.MyTheme
 import com.smsnew.messenger.commonsLibCustom.models.RadioItem
 import com.smsnew.messenger.databinding.ActivitySettingsBinding
 import com.smsnew.messenger.dialogs.ExportMessagesDialog
 import com.smsnew.messenger.dialogs.MessageBubbleSettingDialog
 import com.smsnew.messenger.extensions.*
 import com.smsnew.messenger.helpers.*
+import com.smsnew.messenger.workers.OtpAutoDeleteWorker
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.system.exitProcess
+import com.smsnew.messenger.R as stringsR
 
 class SettingsActivity : SimpleActivity() {
+
+    companion object {
+        private const val THEME_LIGHT = 0
+        private const val THEME_DARK = 1
+        private const val THEME_BLACK = 2
+        private const val THEME_GRAY = 3
+        private const val THEME_CUSTOM = 4
+        private const val THEME_SYSTEM = 5    // Material You
+        private const val THEME_AUTO = 6
+    }
+
+    // ---------- App Theme picker preview state ----------
+    // Strategy: during preview we DO write to baseConfig so that all extensions
+    // (getProperTextColor, getProperBackgroundColor, getSurfaceColor, switch tints,
+    // etc.) automatically read the new colors and the underlying activities in the
+    // back stack already show the correct theme on resume — no blink on finish.
+    //
+    // Original values are snapshotted at activity start; if the user discards,
+    // we restore the snapshot to baseConfig and repaint.
+    private var curTextColor = 0
+    private var curBackgroundColor = 0
+    private var curPrimaryColor = 0
+    private var curAccentColor = 0
+    private var curIsSystemThemeEnabled = false
+    private var curIsAutoThemeEnabled = false
+    private var curSelectedThemeId = 0
+
+    // Snapshot of baseConfig taken when SettingsActivity was first shown — used
+    // to restore on Discard.
+    private var origTextColor = 0
+    private var origBackgroundColor = 0
+    private var origPrimaryColor = 0
+    private var origAccentColor = 0
+    private var origIsSystemThemeEnabled = false
+    private var origIsAutoThemeEnabled = false
+
+    private var hasUnsavedChanges = false
+    private var lastSavePromptTS = 0L
+    private val predefinedThemes = LinkedHashMap<Int, MyTheme>()
+    private var globalConfig: GlobalConfig? = null
+
     private var blockedNumbersAtPause = -1
     private var recycleBinMessages = 0
     private val messagesFileType = "application/json"
@@ -37,6 +93,7 @@ class SettingsActivity : SimpleActivity() {
             add("application/octet-stream")
         }
     }
+
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -63,16 +120,31 @@ class SettingsActivity : SimpleActivity() {
 
         setupEdgeToEdge(padBottomImeAndSystem = listOf(binding.settingsNestedScrollview))
 
+        // Load preview state from current persistent theme
+        initColorVariables()
 
+        if (canAccessGlobalConfig()) {
+            withGlobalConfig {
+                globalConfig = it
+                runOnUiThread {
+                    setupThemes()
+                    setupAppThemePicker()
+                }
+            }
+        } else {
+            setupThemes()
+            setupAppThemePicker()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         setupTopAppBar(binding.settingsAppbar, NavigationIcon.Arrow)
 
-        setupPurchaseThankYou()
 
         setupCustomizeColors()
+        setupAppThemePicker()
+        setupDeleteOtpAfter24Hours()
         setupOverflowIcon()
         setupFloatingButtonStyle()
         setupUseColoredContacts()
@@ -142,66 +214,13 @@ class SettingsActivity : SimpleActivity() {
         setupMessagesExport()
         setupMessagesImport()
 
-        setupTipJar()
         updateTextColors(binding.settingsNestedScrollview)
 
         if (blockedNumbersAtPause != -1 && blockedNumbersAtPause != getBlockedNumbers().hashCode()) {
             refreshConversations()
         }
 
-        binding.apply {
-            val properPrimaryColor = getProperPrimaryColor()
-            arrayOf(
-                settingsAppearanceLabel,
-                settingsGeneralLabel,
-                settingsNotificationsLabel,
-                settingsMessagesLabel,
-                settingsOutgoingMessagesLabel,
-                settingsTopAppBarLabel,
-                settingsListViewLabel,
-                settingsSwipeGesturesLabel,
-                settingsArchivedMessagesLabel,
-                settingsRecycleBinLabel,
-                settingsSecurityLabel,
-                settingsBackupsLabel,
-                settingsOtherLabel
-            ).forEach {
-                it.setTextColor(properPrimaryColor)
-            }
-
-            val surfaceColor = getSurfaceColor()
-            arrayOf(
-                settingsColorCustomizationHolder,
-                settingsGeneralHolder,
-                settingsNotificationsHolder,
-                settingsMessagesHolder,
-                settingsOutgoingMessagesHolder,
-                settingsTopAppBarHolder,
-                settingsListViewHolder,
-                settingsSwipeGesturesHolder,
-                settingsRecycleBinHolder,
-                settingsArchivedMessagesHolder,
-                settingsSecurityHolder,
-                settingsBackupsHolder,
-                settingsOtherHolder
-            ).forEach {
-                it.setCardBackgroundColor(surfaceColor)
-            }
-
-            val properTextColor = getProperTextColor()
-            arrayOf(
-                settingsCustomizeColorsChevron,
-                settingsManageBlockedNumbersChevron,
-                settingsManageBlockedKeywordsChevron,
-                settingsCustomizeNotificationsChevron,
-                settingsImportMessagesChevron,
-                settingsExportMessagesChevron,
-                settingsTipJarChevron,
-                settingsAboutChevron
-            ).forEach {
-                it.applyColorFilter(properTextColor)
-            }
-        }
+        applyCurrentThemeColors()
     }
 
     private fun setupMessagesExport() {
@@ -212,6 +231,21 @@ class SettingsActivity : SimpleActivity() {
         }
     }
 
+    private fun setupDeleteOtpAfter24Hours() {
+        binding.settings24hourAfterRemovedOtpMessage.isChecked = config.deleteOtpAfter24Hours
+        binding.settings24hourMessage.setOnClickListener {
+            binding.settings24hourAfterRemovedOtpMessage.toggle()
+            config.deleteOtpAfter24Hours = binding.settings24hourAfterRemovedOtpMessage.isChecked
+
+            if (config.deleteOtpAfter24Hours) {
+                OtpAutoDeleteWorker.schedule(applicationContext)
+                // Also run once immediately to clean existing old OTPs
+                OtpAutoDeleteWorker.runOnce(applicationContext)
+            } else {
+                OtpAutoDeleteWorker.cancel(applicationContext)
+            }
+        }
+    }
     private fun setupMessagesImport() {
         binding.settingsImportMessagesHolder.setOnClickListener {
             getContent.launch(messageImportFileTypes.toTypedArray())
@@ -223,10 +257,6 @@ class SettingsActivity : SimpleActivity() {
         blockedNumbersAtPause = getBlockedNumbers().hashCode()
     }
 
-    private fun setupPurchaseThankYou() = binding.apply {
-        settingsPurchaseThankYouHolder.beGoneIf(isPro())
-    }
-
     private fun setupCustomizeColors() = binding.apply {
         settingsCustomizeColorsHolder.setOnClickListener {
             startCustomizationActivity(
@@ -234,6 +264,347 @@ class SettingsActivity : SimpleActivity() {
                 showAppIconColor = true
             )
         }
+    }
+
+    private fun initColorVariables() {
+        // Load preview state from current baseConfig
+        curTextColor = baseConfig.textColor
+        curBackgroundColor = baseConfig.backgroundColor
+        curPrimaryColor = baseConfig.primaryColor
+        curAccentColor = baseConfig.accentColor
+        curIsSystemThemeEnabled = baseConfig.isSystemThemeEnabled
+        curIsAutoThemeEnabled = baseConfig.isAutoThemeEnabled
+
+        // Snapshot — used to revert on Discard
+        origTextColor = curTextColor
+        origBackgroundColor = curBackgroundColor
+        origPrimaryColor = curPrimaryColor
+        origAccentColor = curAccentColor
+        origIsSystemThemeEnabled = curIsSystemThemeEnabled
+        origIsAutoThemeEnabled = curIsAutoThemeEnabled
+    }
+
+    private fun setupAppThemePicker() = binding.apply {
+        curSelectedThemeId = getCurrentThemeId()
+        customizationTheme.text = getThemeText()
+        customizationThemeHolder.setOnClickListener {
+            themePickerClicked()
+        }
+    }
+
+    private fun setupThemes() {
+        predefinedThemes.apply {
+            clear()
+            if (isSPlus()) {
+                put(THEME_SYSTEM, getSystemThemeColors())
+            }
+            put(THEME_AUTO, getAutoThemeColors())
+            put(
+                THEME_LIGHT, MyTheme(
+                    labelId = R.string.light_theme,
+                    textColorId = R.color.theme_light_text_color,
+                    backgroundColorId = R.color.theme_light_background_color,
+                    primaryColorId = R.color.color_primary,
+                    appIconColorId = baseConfig.appIconColor
+                )
+            )
+            put(
+                THEME_GRAY, MyTheme(
+                    labelId = stringsR.string.gray_theme,
+                    textColorId = R.color.theme_gray_text_color,
+                    backgroundColorId = R.color.theme_gray_background_color,
+                    primaryColorId = R.color.color_primary,
+                    appIconColorId = baseConfig.appIconColor
+                )
+            )
+            put(
+                THEME_DARK, MyTheme(
+                    labelId = R.string.dark_theme,
+                    textColorId = R.color.theme_dark_text_color,
+                    backgroundColorId = R.color.theme_dark_background_color,
+                    primaryColorId = R.color.color_primary,
+                    appIconColorId = baseConfig.appIconColor
+                )
+            )
+            put(
+                THEME_BLACK, MyTheme(
+                    labelId = stringsR.string.black,
+                    textColorId = R.color.theme_black_text_color,
+                    backgroundColorId = R.color.theme_black_background_color,
+                    primaryColorId = R.color.color_primary,
+                    appIconColorId = baseConfig.appIconColor
+                )
+            )
+        }
+    }
+
+    private fun themePickerClicked() {
+        val items = predefinedThemes.map { (id, theme) ->
+            RadioItem(id, getString(theme.labelId))
+        } as ArrayList<RadioItem>
+
+        RadioGroupDialog(this@SettingsActivity, items, curSelectedThemeId, R.string.theme) { selectedId ->
+            val themeId = selectedId as Int
+            updateColorTheme(themeId)
+
+            if (themeId != THEME_SYSTEM && !baseConfig.wasCustomThemeSwitchDescriptionShown) {
+                baseConfig.wasCustomThemeSwitchDescriptionShown = true
+                toast(R.string.changing_color_description)
+            }
+        }
+    }
+
+    private fun updateColorTheme(themeId: Int) {
+        curSelectedThemeId = themeId
+        val isSystem = themeId == THEME_SYSTEM
+        val isAuto = themeId == THEME_AUTO
+
+        curIsSystemThemeEnabled = isSystem
+        curIsAutoThemeEnabled = isAuto
+
+        // Pull preview colors from the selected theme
+        val theme = when {
+            isSystem -> getSystemThemeColors()
+            isAuto -> getAutoThemeColors()
+            else -> predefinedThemes[themeId] ?: return
+        }
+        curTextColor = getColor(theme.textColorId)
+        curBackgroundColor = getColor(theme.backgroundColorId)
+        curPrimaryColor = getColor(theme.primaryColorId)
+        curAccentColor = getColor(R.color.color_primary)
+
+        // Write preview into baseConfig immediately. This is what makes everything
+        // consistent: getProperTextColor / getProperBackgroundColor / getSurfaceColor
+        // and switch tint readers all read from baseConfig, so updating it makes
+        // those return the new values without us having to override each call site.
+        // Also: any activity behind us in the back stack will read these values in
+        // its onResume (BaseSimpleActivity already does setTheme + updateBackground)
+        // so when SettingsActivity finishes after Save, no blink occurs.
+        baseConfig.apply {
+            textColor = curTextColor
+            backgroundColor = curBackgroundColor
+            primaryColor = curPrimaryColor
+            accentColor = curAccentColor
+            isSystemThemeEnabled = curIsSystemThemeEnabled
+            isAutoThemeEnabled = curIsAutoThemeEnabled
+        }
+
+        // Re-apply the theme XML so attribute-driven colors (switch thumb tints,
+        // dividers, ripples, etc.) flip to the new palette without recreate().
+        setTheme(getThemeId())
+
+        hasUnsavedChanges = true
+
+        binding.customizationTheme.text = getThemeText()
+        applyCurrentThemeColors()
+    }
+
+    /** Re-paints theme-driven UI elements. Reads colors from baseConfig (which we
+     *  already updated in updateColorTheme), so all standard helpers like
+     *  getProperTextColor / getSurfaceColor return the new palette. */
+    private fun applyCurrentThemeColors() = binding.apply {
+        val textColor = getProperTextColor()
+        val backgroundColor = getProperBackgroundColor()
+        val primaryColor = getProperPrimaryColor()
+        val surfaceColor = getSurfaceColor()
+
+        // Window background
+        updateBackgroundColor(backgroundColor)
+
+        // Top app bar
+        setupTopAppBar(
+            topAppBar = settingsAppbar,
+            navigationIcon = NavigationIcon.Arrow,
+            topBarColor = backgroundColor
+        )
+        updateMenuItemColors(settingsToolbar.menu, backgroundColor)
+
+        // Section labels — primary
+        arrayOf(
+            settingsAppearanceLabel,
+            settingsGeneralLabel,
+            settingsNotificationsLabel,
+            settingsMessagesLabel,
+            settingsOutgoingMessagesLabel,
+            settingsTopAppBarLabel,
+            settingsListViewLabel,
+            settingsSwipeGesturesLabel,
+            settingsArchivedMessagesLabel,
+            settingsRecycleBinLabel,
+            settingsSecurityLabel,
+            settingsBackupsLabel,
+        ).forEach {
+            it.setTextColor(primaryColor)
+        }
+
+        // Card backgrounds — surface
+        arrayOf(
+            settingsColorCustomizationHolder,
+            settingsGeneralHolder,
+            settingsNotificationsHolder,
+            settingsMessagesHolder,
+            settingsOutgoingMessagesHolder,
+            settingsTopAppBarHolder,
+            settingsListViewHolder,
+            settingsSwipeGesturesHolder,
+            settingsRecycleBinHolder,
+            settingsArchivedMessagesHolder,
+            settingsSecurityHolder,
+            settingsBackupsHolder,
+        ).forEach {
+            it.setCardBackgroundColor(surfaceColor)
+        }
+
+        // Chevron icons — text
+        arrayOf(
+            settingsCustomizeColorsChevron,
+            settingsManageBlockedNumbersChevron,
+            settingsManageBlockedKeywordsChevron,
+            settingsCustomizeNotificationsChevron,
+            settingsImportMessagesChevron,
+            settingsExportMessagesChevron,
+        ).forEach {
+            it.applyColorFilter(textColor)
+        }
+
+        // Recursively re-tint all text + standard custom views (MyTextView,
+        // MyMaterialSwitch, MyEditText etc.) within the scrollview. This is the
+        // single most important call for "text color updates instantly".
+        updateTextColors(settingsNestedScrollview)
+
+        // Overflow icon
+        settingsOverflowIcon.applyColorFilter(textColor)
+    }
+
+    override fun onBackPressedCompat(): Boolean {
+        return if (hasUnsavedChanges &&
+            System.currentTimeMillis() - lastSavePromptTS > SAVE_DISCARD_PROMPT_INTERVAL
+        ) {
+            promptSaveDiscard()
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun promptSaveDiscard() {
+        lastSavePromptTS = System.currentTimeMillis()
+        ConfirmationAdvancedDialog(
+            activity = this,
+            message = "",
+            messageId = R.string.save_before_closing,
+            positive = R.string.save,
+            negative = R.string.discard
+        ) { savePressed ->
+            if (savePressed) {
+                saveChanges(true)
+            } else {
+                resetColors()
+                finish()
+            }
+        }
+    }
+
+    private fun saveChanges(finishAfterSave: Boolean) {
+        // baseConfig is already up to date (we wrote to it during preview).
+        // Update the snapshot so the new state is the new "original".
+        origTextColor = curTextColor
+        origBackgroundColor = curBackgroundColor
+        origPrimaryColor = curPrimaryColor
+        origAccentColor = curAccentColor
+        origIsSystemThemeEnabled = curIsSystemThemeEnabled
+        origIsAutoThemeEnabled = curIsAutoThemeEnabled
+
+        // Sync to global config (multi-app theming)
+        val globalThemeType = when {
+            !baseConfig.isGlobalThemeEnabled -> GLOBAL_THEME_DISABLED
+            curIsSystemThemeEnabled -> GLOBAL_THEME_SYSTEM
+            curIsAutoThemeEnabled -> GLOBAL_THEME_AUTO
+            else -> GLOBAL_THEME_CUSTOM
+        }
+        updateGlobalConfig(ContentValues().apply {
+            put(COL_THEME_TYPE, globalThemeType)
+            put(COL_TEXT_COLOR, curTextColor)
+            put(COL_BACKGROUND_COLOR, curBackgroundColor)
+            put(COL_PRIMARY_COLOR, curPrimaryColor)
+            put(COL_ACCENT_COLOR, curAccentColor)
+            put(COL_APP_ICON_COLOR, baseConfig.appIconColor)
+        })
+
+        config.needRestart = true
+        hasUnsavedChanges = false
+        if (finishAfterSave) finish()
+    }
+
+    /** Discard preview: restore baseConfig from snapshot, then refresh UI. */
+    private fun resetColors() {
+        hasUnsavedChanges = false
+
+        // Restore baseConfig to the snapshot taken when SettingsActivity opened
+        baseConfig.apply {
+            textColor = origTextColor
+            backgroundColor = origBackgroundColor
+            primaryColor = origPrimaryColor
+            accentColor = origAccentColor
+            isSystemThemeEnabled = origIsSystemThemeEnabled
+            isAutoThemeEnabled = origIsAutoThemeEnabled
+        }
+
+        // Sync cur* with the restored values
+        curTextColor = origTextColor
+        curBackgroundColor = origBackgroundColor
+        curPrimaryColor = origPrimaryColor
+        curAccentColor = origAccentColor
+        curIsSystemThemeEnabled = origIsSystemThemeEnabled
+        curIsAutoThemeEnabled = origIsAutoThemeEnabled
+
+        // Re-apply original theme XML and repaint
+        setTheme(getThemeId())
+        curSelectedThemeId = getCurrentThemeId()
+        binding.customizationTheme.text = getThemeText()
+        applyCurrentThemeColors()
+    }
+
+    private fun getCurrentThemeId(): Int {
+        if (baseConfig.isSystemThemeEnabled) return THEME_SYSTEM
+        if (baseConfig.isAutoThemeEnabled) return THEME_AUTO
+
+        for ((id, theme) in predefinedThemes) {
+            if (id == THEME_SYSTEM || id == THEME_AUTO) continue
+            if (baseConfig.textColor == getColor(theme.textColorId) &&
+                baseConfig.backgroundColor == getColor(theme.backgroundColorId) &&
+                baseConfig.primaryColor == getColor(theme.primaryColorId)
+            ) {
+                return id
+            }
+        }
+        return THEME_CUSTOM
+    }
+
+    private fun getThemeText(): String {
+        val labelId = predefinedThemes[curSelectedThemeId]?.labelId ?: R.string.custom
+        return getString(labelId)
+    }
+
+    private fun getAutoThemeColors(): MyTheme {
+        val isDark = isSystemInDarkMode()
+        return MyTheme(
+            labelId = R.string.auto_light_dark_theme,
+            textColorId = if (isDark) R.color.theme_black_text_color else R.color.theme_light_text_color,
+            backgroundColorId = if (isDark) R.color.theme_black_background_color else R.color.theme_light_background_color,
+            primaryColorId = R.color.color_primary,
+            appIconColorId = baseConfig.appIconColor
+        )
+    }
+
+    private fun getSystemThemeColors(): MyTheme {
+        return MyTheme(
+            labelId = R.string.system_default,
+            textColorId = R.color.theme_black_text_color,
+            backgroundColorId = R.color.theme_black_background_color,
+            primaryColorId = R.color.color_primary,
+            appIconColorId = baseConfig.appIconColor
+        )
     }
 
     private fun setupCustomizeNotifications() = binding.apply {
@@ -1163,13 +1534,13 @@ class SettingsActivity : SimpleActivity() {
         settingsColoredContactsHolder.setOnClickListener {
             settingsColoredContacts.toggle()
             config.useColoredContacts = settingsColoredContacts.isChecked
-            settingsContactColorListHolder.beVisibleIf(config.useColoredContacts)
+            settingsContactColorListHolder.beVisibleIf(false)
             config.needRestart = true
         }
     }
 
     private fun setupContactsColorList() = binding.apply {
-        settingsContactColorListHolder.beVisibleIf(config.useColoredContacts)
+        settingsContactColorListHolder.beVisibleIf(false)
         settingsContactColorListIcon.setImageResource(getContactsColorListIcon(config.contactColorList))
         settingsContactColorListHolder.setOnClickListener {
             val items = arrayListOf(
@@ -1273,14 +1644,6 @@ class SettingsActivity : SimpleActivity() {
     }
 
     private fun hasColorChanged(old: Int, new: Int) = abs(old - new) > 1
-
-    private fun setupTipJar() = binding.apply {
-        settingsTipJarHolder.apply {
-            beVisibleIf(isPro())
-            background.applyColorFilter(getColoredMaterialStatusBarColor().lightenColor(4))
-
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         updateMenuItemColors(menu)

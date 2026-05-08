@@ -145,7 +145,6 @@ class CustomizationActivity : BaseSimpleActivity() {
         updateApplyToAllColors()
         updateHoldersColor()
 
-        setupPurchaseThankYou()
         updateAutoThemeFields()
         setupTopAppBarColorIcon()
         setupTopAppBarColorTitle()
@@ -260,7 +259,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.customizationThemeHolder.setOnClickListener {
             if (isProVersion()) themePickerClicked()
             else {
-                shakePurchase()
+                
                 RxAnimation.from(binding.themeHolder)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -620,7 +619,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.customizationTextColorHolder.setOnClickListener {
             if (isProVersion()) pickTextColor()
             else {
-                shakePurchase()
+                
                 RxAnimation.from(it)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -631,7 +630,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.customizationTextCursorColorHolder.setOnClickListener {
             if (isProVersion()) pickTextCursorColor()
             else {
-                shakePurchase()
+                
                 RxAnimation.from(it)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -642,7 +641,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.customizationBackgroundColorHolder.setOnClickListener {
             if (isProVersion()) pickBackgroundColor()
             else {
-                shakePurchase()
+                
                 RxAnimation.from(it)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -653,7 +652,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.customizationPrimaryColorHolder.setOnClickListener {
             if (isProVersion()) pickPrimaryColor()
             else {
-                shakePurchase()
+                
                 RxAnimation.from(it)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -664,7 +663,7 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.customizationAccentColorHolder.setOnClickListener {
             if (isProVersion()) pickAccentColor()
             else {
-                shakePurchase()
+                
                 RxAnimation.from(it)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -734,7 +733,7 @@ class CustomizationActivity : BaseSimpleActivity() {
             val selectedType = selected as Int
             if (selectedType == FONT_TYPE_CUSTOM) {
                 if (!pro) {
-                    shakePurchase()
+                    
                     RxAnimation.from(binding.customizationFontHolder)
                         .shake(shakeTranslation = 2f)
                         .subscribe()
@@ -1018,7 +1017,7 @@ class CustomizationActivity : BaseSimpleActivity() {
                     binding.customizationAppIconColor.setImageDrawable(getAppIcon(curAppIconColor))
                 }
             } else {
-                shakePurchase()
+                
                 RxAnimation.from(binding.customizationAppIconColorHolder)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -1052,7 +1051,7 @@ class CustomizationActivity : BaseSimpleActivity() {
 
             else -> {
                 binding.applyToAll.isChecked = false
-                shakePurchase()
+                
                 RxAnimation.from(binding.applyToAll)
                     .shake(shakeTranslation = 2f)
                     .subscribe()
@@ -1137,29 +1136,9 @@ class CustomizationActivity : BaseSimpleActivity() {
         binding.applyToAll.isChecked = baseConfig.isGlobalThemeEnabled
         updateApplyToAllColors()
     }
+    
 
-    private fun setupPurchaseThankYou() {
-        binding.settingsPurchaseThankYouHolder.beGoneIf(isProVersion())
-//        binding.settingsPurchaseThankYouHolder.onClick = { launchPurchase() }
-    }
-
-    /*    private fun launchPurchase() {
-            startPurchaseActivity(
-                stringsR.string.app_name_g,
-                getProductIdList(),
-                getProductIdListRu(),
-                getSubscriptionIdList(),
-                getSubscriptionIdListRu(),
-                getSubscriptionYearIdList(),
-                getSubscriptionYearIdListRu(),
-            )
-        }*/
-
-    private fun shakePurchase() {
-        RxAnimation.from(binding.settingsPurchaseThankYouHolder)
-            .shake()
-            .subscribe()
-    }
+   
 
     private fun setupTopAppBarColorIcon() {
         binding.apply {

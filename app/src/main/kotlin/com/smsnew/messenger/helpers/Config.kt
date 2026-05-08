@@ -146,7 +146,7 @@ class Config(context: Context) : BaseConfig(context) {
 
     //Goodwy
     var bubbleStyle: Int
-        get() = prefs.getInt(BUBBLE_STYLE, BUBBLE_STYLE_IOS_NEW)
+        get() = prefs.getInt(BUBBLE_STYLE, BUBBLE_STYLE_ORIGINAL)
         set(bubbleStyle) = prefs.edit { putInt(BUBBLE_STYLE, bubbleStyle) }
 
     var bubbleInvertColor: Boolean
@@ -217,4 +217,8 @@ class Config(context: Context) : BaseConfig(context) {
     var swipeRipple: Boolean
         get() = prefs.getBoolean(SWIPE_RIPPLE, false)
         set(swipeRipple) = prefs.edit { putBoolean(SWIPE_RIPPLE, swipeRipple) }
+
+    var deleteOtpAfter24Hours: Boolean
+        get() = prefs.getBoolean(DELETE_OTP_AFTER_24H, false)
+        set(value) = prefs.edit().putBoolean(DELETE_OTP_AFTER_24H, value).apply()
 }

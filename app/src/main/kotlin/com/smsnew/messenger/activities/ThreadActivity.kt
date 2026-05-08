@@ -26,6 +26,7 @@ import android.text.format.DateUtils
 import android.text.format.DateUtils.FORMAT_NO_YEAR
 import android.text.format.DateUtils.FORMAT_SHOW_DATE
 import android.text.format.DateUtils.FORMAT_SHOW_TIME
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator

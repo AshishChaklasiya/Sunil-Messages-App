@@ -177,3 +177,4 @@ const val SWIPE_ACTION_OPEN = 9
 const val SWIPE_ACTION_RESTORE = 10
 const val SWIPE_VIBRATION = "swipe_vibration"
 const val SWIPE_RIPPLE = "swipe_ripple"
+const val DELETE_OTP_AFTER_24H = "delete_otp_after_24h"

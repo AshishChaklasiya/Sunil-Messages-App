@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- IMPORTANT: IDs MUST match menu_main.xml exactly so the existing
+         setOnMenuItemClickListener handler in MainActivity works for both. -->
+
+    <!-- Navigation items (no checkable behaviour) -->
+    <group android:id="@+id/drawer_group_main">
+
+        <item
+            android:id="@+id/show_recycle_bin"
+            android:icon="@drawable/ic_delete_outline"
+            android:title="@string/show_the_recycle_bin" />
+
+        <item
+            android:id="@+id/show_archived"
+            android:icon="@drawable/ic_archive_vector"
+            android:title="@string/show_archived_conversations" />
+
+        <item
+            android:id="@+id/manage_blocked_numbers"
+            android:icon="@drawable/ic_block_vector"
+            android:title="@string/manage_blocked_numbers" />
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings_cog_vector"
+            android:title="@string/settings" />
+
+    </group>
+
+
+    <group android:id="@+id/drawer_group_toggles">
+
+        <item
+            android:id="@+id/show_blocked_numbers"
+            android:icon="@drawable/ic_show_block"
+            android:checkable="true"
+            android:title="@string/show_blocked_numbers"
+            app:actionLayout="@layout/drawer_action_switch" />
+    </group>
+</menu>
+

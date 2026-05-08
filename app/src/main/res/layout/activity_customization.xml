@@ -34,18 +34,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.smsnew.messenger.commonsLibCustom.views.PurchaseThankYouItem
-                android:id="@+id/settings_purchase_thank_you_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/themeHolder"
                 style="@style/SettingsSectionHolder"
                 android:layout_marginTop="@dimen/activity_margin"
-                android:layout_below="@+id/settings_purchase_thank_you_holder"
                 app:cardCornerRadius="@dimen/activity_margin"
+                android:visibility="gone"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -83,6 +78,7 @@
                 android:id="@+id/customizationThemeDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginHorizontal="@dimen/activity_margin"
                 android:paddingHorizontal="14dp"
                 android:maxWidth="@dimen/settings_value_width_long"
@@ -140,6 +136,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/settingsTopAppBarColorTitleHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -167,6 +164,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/customizationUseAccentColorHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
@@ -202,6 +200,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/customization_accent_color_holder"
                         android:layout_below="@+id/customizationUseAccentColorHolder"
                         style="@style/SettingsHolderStyle">
@@ -226,6 +225,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/customization_background_color_holder"
                         android:layout_below="@+id/customization_accent_color_holder"
                         style="@style/SettingsHolderStyle">
@@ -250,6 +250,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/customization_text_color_holder"
                         android:layout_below="@+id/customization_background_color_holder"
                         style="@style/SettingsHolderStyle">
@@ -274,6 +275,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/customization_font_holder"
                         android:layout_below="@+id/customization_text_color_holder"
                         style="@style/SettingsHolderStyle">

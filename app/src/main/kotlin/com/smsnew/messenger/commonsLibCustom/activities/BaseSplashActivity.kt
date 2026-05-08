@@ -1,12 +1,14 @@
 package com.smsnew.messenger.commonsLibCustom.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.smsnew.messenger.R
 import com.smsnew.messenger.commonsLibCustom.extensions.baseConfig
 import com.smsnew.messenger.commonsLibCustom.extensions.isAutoTheme
 import com.smsnew.messenger.commonsLibCustom.extensions.isSystemInDarkMode
 import com.smsnew.messenger.commonsLibCustom.extensions.syncGlobalConfig
+import kotlin.context
 
 abstract class BaseSplashActivity : AppCompatActivity() {
     abstract fun initActivity()
@@ -23,6 +25,7 @@ abstract class BaseSplashActivity : AppCompatActivity() {
 //            return
 //        }
 
+        Log.e("====", "onCreate: "+baseConfig.useColoredContacts)
         syncGlobalConfig {
             baseConfig.apply {
                 if (isAutoTheme()) {
