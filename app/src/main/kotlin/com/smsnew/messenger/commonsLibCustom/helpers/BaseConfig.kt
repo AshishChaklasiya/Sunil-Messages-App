@@ -510,15 +510,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(FONT_SIZE, 1) //context.resources.getInteger(R.integer.default_font_size)
         set(fontSize) = prefs.edit { putInt(FONT_SIZE, fontSize) }
 
-    // notify the users about new SMS Messenger and Voice Recorder released
-    var wasMessengerRecorderShown: Boolean
-        get() = prefs.getBoolean(WAS_MESSENGER_RECORDER_SHOWN, false)
-        set(wasMessengerRecorderShown) = prefs.edit { putBoolean(WAS_MESSENGER_RECORDER_SHOWN, wasMessengerRecorderShown) }
-
-    var defaultTab: Int
-        get() = prefs.getInt(DEFAULT_TAB, TAB_LAST_USED)
-        set(defaultTab) = prefs.edit { putInt(DEFAULT_TAB, defaultTab) }
-
     var startNameWithSurname: Boolean
         get() = prefs.getBoolean(START_NAME_WITH_SURNAME, false)
         set(startNameWithSurname) = prefs.edit { putBoolean(START_NAME_WITH_SURNAME, startNameWithSurname) }
@@ -555,13 +546,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(SHOW_CONTACT_THUMBNAILS, true)
         set(showContactThumbnails) = prefs.edit { putBoolean(SHOW_CONTACT_THUMBNAILS, showContactThumbnails) }
 
-    var showPhoneNumbers: Boolean
-        get() = prefs.getBoolean(SHOW_PHONE_NUMBERS, false)
-        set(showPhoneNumbers) = prefs.edit { putBoolean(SHOW_PHONE_NUMBERS, showPhoneNumbers) }
-
-    var formatPhoneNumbers: Boolean
-        get() = prefs.getBoolean(FORMAT_PHONE_NUMBERS, true)
-        set(formatPhoneNumbers) = prefs.edit { putBoolean(FORMAT_PHONE_NUMBERS, formatPhoneNumbers) }
 
     var showOnlyContactsWithNumbers: Boolean
         get() = prefs.getBoolean(SHOW_ONLY_CONTACTS_WITH_NUMBERS, false)
@@ -571,54 +555,20 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getString(LAST_USED_CONTACT_SOURCE, "")!!
         set(lastUsedContactSource) = prefs.edit { putString(LAST_USED_CONTACT_SOURCE, lastUsedContactSource) }
 
-    var showContactFields: Int
-        get() = prefs.getInt(
-            SHOW_CONTACT_FIELDS,
-            SHOW_FIRST_NAME_FIELD or SHOW_SURNAME_FIELD or SHOW_PHONE_NUMBERS_FIELD or SHOW_IMS_FIELD or
-                SHOW_MESSENGERS_ACTIONS_FIELD or SHOW_EMAILS_FIELD or SHOW_ADDRESSES_FIELD or SHOW_EVENTS_FIELD or
-                SHOW_NOTES_FIELD or SHOW_GROUPS_FIELD or SHOW_CONTACT_SOURCE_FIELD or SHOW_RINGTONE_FIELD or SHOW_ORGANIZATION_FIELD
-        )
-        set(showContactFields) = prefs.edit { putInt(SHOW_CONTACT_FIELDS, showContactFields) }
-
-    var showDialpadButton: Boolean
-        get() = prefs.getBoolean(SHOW_DIALPAD_BUTTON, true)
-        set(showDialpadButton) = prefs.edit { putBoolean(SHOW_DIALPAD_BUTTON, showDialpadButton) }
 
     var wasLocalAccountInitialized: Boolean
         get() = prefs.getBoolean(WAS_LOCAL_ACCOUNT_INITIALIZED, false)
         set(wasLocalAccountInitialized) = prefs.edit { putBoolean(WAS_LOCAL_ACCOUNT_INITIALIZED, wasLocalAccountInitialized) }
 
-    var lastExportPath: String
-        get() = prefs.getString(LAST_EXPORT_PATH, "")!!
-        set(lastExportPath) = prefs.edit { putString(LAST_EXPORT_PATH, lastExportPath) }
-
-    var speedDial: String
-        get() = prefs.getString(SPEED_DIAL, "")!!
-        set(speedDial) = prefs.edit { putString(SPEED_DIAL, speedDial) }
-
-    var showPrivateContacts: Boolean
-        get() = prefs.getBoolean(SHOW_PRIVATE_CONTACTS, true)
-        set(showPrivateContacts) = prefs.edit { putBoolean(SHOW_PRIVATE_CONTACTS, showPrivateContacts) }
 
     var mergeDuplicateContacts: Boolean
         get() = prefs.getBoolean(MERGE_DUPLICATE_CONTACTS, true)
         set(mergeDuplicateContacts) = prefs.edit { putBoolean(MERGE_DUPLICATE_CONTACTS, mergeDuplicateContacts) }
 
-    var favoritesContactsOrder: String
-        get() = prefs.getString(FAVORITES_CONTACTS_ORDER, "")!!
-        set(order) = prefs.edit { putString(FAVORITES_CONTACTS_ORDER, order) }
-
-    var isCustomOrderSelected: Boolean
-        get() = prefs.getBoolean(FAVORITES_CUSTOM_ORDER_SELECTED, false)
-        set(selected) = prefs.edit { putBoolean(FAVORITES_CUSTOM_ORDER_SELECTED, selected) }
 
     var viewType: Int
         get() = prefs.getInt(VIEW_TYPE, VIEW_TYPE_LIST)
         set(viewType) = prefs.edit { putInt(VIEW_TYPE, viewType) }
-
-    var contactsGridColumnCount: Int
-        get() = prefs.getInt(CONTACTS_GRID_COLUMN_COUNT, getDefaultContactColumnsCount())
-        set(contactsGridColumnCount) = prefs.edit { putInt(CONTACTS_GRID_COLUMN_COUNT, contactsGridColumnCount) }
 
     private fun getDefaultContactColumnsCount(): Int {
         val isPortrait = context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
@@ -629,21 +579,6 @@ open class BaseConfig(val context: Context) {
         }
     }
 
-    var autoBackup: Boolean
-        get() = prefs.getBoolean(AUTO_BACKUP, false)
-        set(autoBackup) = prefs.edit { putBoolean(AUTO_BACKUP, autoBackup) }
-
-    var autoBackupFolder: String
-        get() = prefs.getString(AUTO_BACKUP_FOLDER, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath)!!
-        set(autoBackupFolder) = prefs.edit { putString(AUTO_BACKUP_FOLDER, autoBackupFolder) }
-
-    var autoBackupFilename: String
-        get() = prefs.getString(AUTO_BACKUP_FILENAME, "")!!
-        set(autoBackupFilename) = prefs.edit { putString(AUTO_BACKUP_FILENAME, autoBackupFilename) }
-
-    var lastAutoBackupTime: Long
-        get() = prefs.getLong(LAST_AUTO_BACKUP_TIME, 0L)
-        set(lastAutoBackupTime) = prefs.edit { putLong(LAST_AUTO_BACKUP_TIME, lastAutoBackupTime) }
 
     var passwordRetryCount: Int
         get() = prefs.getInt(PASSWORD_RETRY_COUNT, 0)
@@ -652,14 +587,6 @@ open class BaseConfig(val context: Context) {
     var passwordCountdownStartMs: Long
         get() = prefs.getLong(PASSWORD_COUNTDOWN_START_MS, 0L)
         set(passwordCountdownStartMs) = prefs.edit { putLong(PASSWORD_COUNTDOWN_START_MS, passwordCountdownStartMs) }
-
-    // Returns the first day of week, indexing follows ISO 8601: Mon=1, ..., Sun=7
-    var firstDayOfWeek: Int
-        get() {
-            val defaultFirstDayOfWeek = Calendar.getInstance(Locale.getDefault()).firstDayOfWeek
-            return prefs.getInt(FIRST_DAY_OF_WEEK, getISODayOfWeekFromJava(defaultFirstDayOfWeek))
-        }
-        set(firstDayOfWeek) = prefs.edit { putInt(FIRST_DAY_OF_WEEK, firstDayOfWeek) }
 
     // Accessibility
     var showCheckmarksOnSwitches: Boolean
@@ -670,7 +597,7 @@ open class BaseConfig(val context: Context) {
 
     // Font customization
     var fontType: Int
-        get() = prefs.getInt(CUSTOM_FONT_TYPE, FONT_TYPE_SYSTEM_DEFAULT)
+        get() = prefs.getInt(CUSTOM_FONT_TYPE, FONT_TYPE_CUSTOM)
         set(customFontType) = prefs.edit { putInt(CUSTOM_FONT_TYPE, customFontType) }
 
     var fontName: String
@@ -687,11 +614,7 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getInt(OVERFLOW_ICON, OVERFLOW_ICON_HORIZONTAL)
         set(overflowIcon) = prefs.edit { putInt(OVERFLOW_ICON, overflowIcon) }
 
-    var screenSlideAnimation: Int
-        get() = prefs.getInt(SCREEN_SLIDE_ANIMATION, 1)
-        set(screenSlideAnimation) = prefs.edit { putInt(SCREEN_SLIDE_ANIMATION, screenSlideAnimation) }
-
-    var materialDesign3: Boolean
+     var materialDesign3: Boolean
         get() = prefs.getBoolean(MATERIAL_DESIGN3, false)
         set(materialDesign3) = prefs.edit { putBoolean(MATERIAL_DESIGN3, materialDesign3) }
 
@@ -703,30 +626,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(COLOR_SIM_ICON, true)
         set(colorSimIcons) = prefs.edit { putBoolean(COLOR_SIM_ICON, colorSimIcons) }
 
-    // Tab bar
-    var bottomNavigationBar: Boolean
-        get() = prefs.getBoolean(BOTTOM_NAVIGATION_BAR, true)
-        set(bottomNavigationBar) = prefs.edit { putBoolean(BOTTOM_NAVIGATION_BAR, bottomNavigationBar) }
-
-    var transparentNavigationBar: Boolean
-        get() = prefs.getBoolean(TRANSPARENT_NAVI_BAR, true)
-        set(transparentNavigationBar) = prefs.edit { putBoolean(TRANSPARENT_NAVI_BAR, transparentNavigationBar) }
-
-    var appRecommendationDialogCount: Int
-        get() = prefs.getInt(APP_RECOMMENDATION_DIALOG_COUNT, 3)
-        set(appRecommendationDialogCount) = prefs.edit { putInt(APP_RECOMMENDATION_DIALOG_COUNT, appRecommendationDialogCount) }
-
-    var newAppRecommendationDialogCount: Int
-        get() = prefs.getInt(NEW_APP_RECOMMENDATION_DIALOG_COUNT, 3)
-        set(newAppRecommendationDialogCount) = prefs.edit { putInt(NEW_APP_RECOMMENDATION_DIALOG_COUNT, newAppRecommendationDialogCount) }
-
-    var openSearch: Boolean
-        get() = prefs.getBoolean(CLOSE_SEARCH, false)
-        set(openSearch) = prefs.edit { putBoolean(CLOSE_SEARCH, openSearch) }
-
-    var closeSearch: Boolean
-        get() = prefs.getBoolean(OPEN_SEARCH, false)
-        set(closeSearch) = prefs.edit { putBoolean(OPEN_SEARCH, closeSearch) }
 
     var isPro: Boolean
         get() = prefs.getBoolean(IS_PRO_VERSION, true)
@@ -746,7 +645,7 @@ open class BaseConfig(val context: Context) {
         set(simIconsColors) = prefs.edit { putString(SIM_ICON_COLORS, simIconsColors.joinToString(separator = "\n")) }
 
     var textCursorColor: Int
-        get() = prefs.getInt(TEXT_CURSOR_COLOR, ContextCompat.getColor(context, R.color.default_primary_color))
+        get() = prefs.getInt(TEXT_CURSOR_COLOR, ContextCompat.getColor(context, R.color.cursor_color))
         set(textCursorColor) = prefs.edit { putInt(TEXT_CURSOR_COLOR, textCursorColor) }
 
     var linesCount: Int
@@ -756,14 +655,6 @@ open class BaseConfig(val context: Context) {
     var showBlockedNumbers: Boolean
         get() = prefs.getBoolean(SHOW_BLOCK_NUMBERS, false)
         set(showBlockedNumbers) = prefs.edit { putBoolean(SHOW_BLOCK_NUMBERS, showBlockedNumbers) }
-
-    var showButtonBlockedNumbers: Boolean
-        get() = prefs.getBoolean(SHOW_BUTTON_BLOCK_NUMBERS, false)
-        set(showButtonBlockedNumbers) = prefs.edit { putBoolean(SHOW_BUTTON_BLOCK_NUMBERS, showButtonBlockedNumbers) }
-
-    var flashForAlerts: Boolean
-        get() = prefs.getBoolean(FLASH_FOR_ALERTS, false)
-        set(flashForAlerts) = prefs.edit { putBoolean(FLASH_FOR_ALERTS, flashForAlerts) }
 
     var currentSIMCardIndex: Int
         get() = prefs.getInt(CURRENT_SIM_CARD_INDEX, 0) //0 - sim1, 1 - sim2
@@ -785,18 +676,6 @@ open class BaseConfig(val context: Context) {
 
     val isTopAppBarColorTitle: Flow<Boolean> = ::topAppBarColorTitle.asFlowNonNull()
 
-    var autoBackupTime: Int
-        get() = prefs.getInt(AUTO_BACKUP_TIME, 360)
-        set(autoBackupTime) = prefs.edit { putInt(AUTO_BACKUP_TIME, autoBackupTime) }
-
-    var autoBackupInterval: Int
-        get() = prefs.getInt(AUTO_BACKUP_INTERVAL, 10)
-        set(autoBackupInterval) = prefs.edit { putInt(AUTO_BACKUP_INTERVAL, autoBackupInterval) }
-
-    var nextAutoBackupTime: Long
-        get() = prefs.getLong(NEXT_AUTO_BACKUP_TIME, 0L)
-        set(nextAutoBackupTime) = prefs.edit { putLong(NEXT_AUTO_BACKUP_TIME, nextAutoBackupTime) }
-
     var sortingSymbolsFirst: Boolean
         get() = prefs.getBoolean(SORT_SYMBOLS_FIRST, false)
         set(sortingSymbolsFirst) = prefs.edit { putBoolean(SORT_SYMBOLS_FIRST, sortingSymbolsFirst) }
@@ -809,9 +688,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getBoolean(SHOW_SEARCH_BAR, true)
         set(showSearchBar) = prefs.edit { putBoolean(SHOW_SEARCH_BAR, showSearchBar) }
 
-    var hideIconsInMenu: Boolean
-        get() = prefs.getBoolean(HIDE_ICONS_IN_MENU, true)
-        set(hideIconsInMenu) = prefs.edit { putBoolean(HIDE_ICONS_IN_MENU, hideIconsInMenu) }
 
     var skipArchiveConfirmation: Boolean
         get() = prefs.getBoolean(SKIP_ARCHIVE_CONFIRMATION, false)
@@ -830,14 +706,13 @@ open class BaseConfig(val context: Context) {
         set(contactThumbnailsSize) = prefs.edit { putInt(CONTACT_THUMBNAILS_SIZE, contactThumbnailsSize) }
 
     var changeColourTopBar: Boolean
-        get() = prefs.getBoolean(CHANGE_COLOUR_TOP_BAR, true)
+        get() = prefs.getBoolean(CHANGE_COLOUR_TOP_BAR, false)
         set(changeColourTopBar) = prefs.edit { putBoolean(CHANGE_COLOUR_TOP_BAR, changeColourTopBar) }
 
     var useShamsi: Boolean //Persian Calendar
         get() = prefs.getBoolean(USE_SHAMSI, false)
         set(useShamsi) = prefs.edit { putBoolean(USE_SHAMSI, useShamsi) }
 
-    val isUseShamsi: Flow<Boolean> = ::useShamsi.asFlowNonNull()
 
     var needInit: Boolean
         get() = prefs.getBoolean(NEED_INIT, true)
@@ -889,9 +764,6 @@ open class BaseConfig(val context: Context) {
         get() = prefs.getString(LAST_ERROR, "")!!
         set(lastError) = prefs.edit { putString(LAST_ERROR, lastError) }
 
-    var showErrorDialog: Boolean
-        get() = prefs.getBoolean(SHOW_ERROR_DIALOG, true)
-        set(showErrorDialog) = prefs.edit { putBoolean(SHOW_ERROR_DIALOG, showErrorDialog) }
 }
 
 

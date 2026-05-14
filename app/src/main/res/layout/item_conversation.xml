@@ -83,8 +83,7 @@
                 app:layout_goneMarginStart="@dimen/medium_margin"
                 app:layout_constraintStart_toEndOf="@+id/unreadIndicator"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:src="@drawable/ic_sms_messenger" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <com.smsnew.messenger.commonsLibCustom.views.MyTextView
                 android:id="@+id/conversationAddress"
@@ -140,80 +139,88 @@
                 app:layout_goneMarginStart="@dimen/normal_margin"
                 app:layout_constraintTop_toBottomOf="@+id/conversationAddress"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/draftClear"
+                app:layout_constraintEnd_toStartOf="@+id/clearlayout"
                 app:layout_constraintStart_toEndOf="@+id/draftIndicator"
                 tools:text="Hey buddy!"
                 tools:ignore="RtlSymmetry" />
 
-            <ImageView
-                android:id="@+id/draftClear"
-                android:layout_width="@dimen/pin_icon_size"
-                android:layout_height="@dimen/pin_icon_size"
-                android:layout_marginBottom="-2dp"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/ic_cross_vector"
-                android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="@null"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:id="@+id/clearlayout"
                 app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
                 app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
                 app:layout_constraintStart_toEndOf="@+id/conversationBodyShort"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <ImageView
-                android:id="@+id/pinIndicator"
-                android:layout_width="@dimen/pin_icon_size"
-                android:layout_height="@dimen/pin_icon_size"
-                android:layout_marginBottom="-2dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_pin_angle_filled"
-                app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
-                app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/unreadCountBadge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="19dp"
-                android:minHeight="19dp"
-                android:layout_marginBottom="-2dp"
-                android:gravity="center"
-                android:paddingVertical="@dimen/tiny_margin"
-                android:paddingHorizontal="@dimen/smaller_margin"
-                android:textSize="12dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:background="@drawable/tab_background"
-                android:visibility="gone"
-                android:includeFontPadding="true"
-                app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
-                app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:visibility="visible"
-                tools:backgroundTint="@color/primary"
-                tools:text="8"
-                tools:ignore="SpUsage" />
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
+                    app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
+                    app:layout_constraintStart_toEndOf="@+id/conversationBodyShort"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/draftClear"
+                        android:layout_width="@dimen/pin_icon_size"
+                        android:layout_height="@dimen/pin_icon_size"
+                        android:src="@drawable/ic_cross_vector"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@null"
+                        app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
+                        app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
+                        app:layout_constraintStart_toEndOf="@+id/conversationBodyShort"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/pinIndicator"
+                        android:layout_width="@dimen/pin_icon_size"
+                        android:layout_height="@dimen/pin_icon_size"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_pin_angle_filled"
+                        app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
+                        app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/unreadCountBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="18dp"
+                        android:minHeight="18dp"
+                        android:gravity="center"
+                        android:textSize="12dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:background="@drawable/tab_background"
+                        android:visibility="gone"
+                        android:includeFontPadding="true"
+                        app:layout_constraintTop_toTopOf="@+id/conversationBodyShort"
+                        app:layout_constraintBottom_toBottomOf="@+id/conversationBodyShort"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:visibility="visible"
+                        tools:backgroundTint="@color/primary"
+                        tools:text="8"
+                        tools:ignore="SpUsage" />
+                </LinearLayout>
+            </LinearLayout>
 
             <com.smsnew.messenger.commonsLibCustom.views.MyTextView
                 android:id="@+id/conversationDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.4"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="@dimen/medium_margin"
                 android:textSize="@dimen/smaller_text_size"
                 app:layout_constraintTop_toTopOf="@+id/conversationAddress"
                 app:layout_constraintBottom_toBottomOf="@+id/conversationAddress"
-                app:layout_constraintEnd_toStartOf="@+id/conversationChevron"
+                app:layout_constraintEnd_toStartOf="@+id/onlyView"
                 tools:text="13:30" />
 
-            <ImageView
-                android:id="@+id/conversationChevron"
+            <View
+                android:id="@+id/onlyView"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:gravity="center_vertical"
-                android:alpha="0.4"
-                android:src="@drawable/ic_chevron_right_vector"
+                android:visibility="gone"
                 android:contentDescription="@null"
                 app:layout_constraintTop_toTopOf="@+id/conversationAddress"
                 app:layout_constraintBottom_toBottomOf="@+id/conversationAddress"

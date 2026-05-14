@@ -94,7 +94,7 @@
     <dimen name="colorpicker_color_width">35dp</dimen>
     <dimen name="colorpicker_color_height">70dp</dimen>
 
-    <dimen name="normal_icon_size">48dp</dimen>
+    <dimen name="normal_icon_size">42dp</dimen>
     <dimen name="fingerprint_size">72dp</dimen>
     <dimen name="fab_size">56dp</dimen>
     <dimen name="secondary_fab_bottom_margin">76dp</dimen>

@@ -5,14 +5,14 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.ContactsContract
-import com.smsnew.messenger.commonsLibCustom.RightApp
+import com.smsnew.messenger.commonsLibCustom.MainApplication
 import com.smsnew.messenger.commonsLibCustom.extensions.hasPermission
 import com.smsnew.messenger.commonsLibCustom.helpers.PERMISSION_READ_CONTACTS
 import com.smsnew.messenger.commonsLibCustom.helpers.ensureBackgroundThread
 import com.smsnew.messenger.extensions.rescheduleAllScheduledMessages
 import com.smsnew.messenger.helpers.MessagingCache
 
-class App : RightApp() {
+class App : MainApplication() {
     override val isAppLockFeatureAvailable = true
 
     override fun onCreate() {

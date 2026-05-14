@@ -712,25 +712,6 @@ class ThreadAdapter(
                 }
             }
 
-//            if (!activity.isFinishing && !activity.isDestroyed) {
-//                SimpleContactsHelper(activity).loadContactImage(message.senderPhotoUri, threadMessageSenderPhoto, message.senderName)
-//            }
-//            if (!activity.isFinishing && !activity.isDestroyed) {
-//                val contactLetterIcon = SimpleContactsHelper(activity).getContactLetterIcon(message.senderName)
-//                val placeholder = contactLetterIcon.toDrawable(activity.resources)
-
-//                val options = RequestOptions()
-//                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//                    .error(placeholder)
-//                    .centerCrop()
-//
-//                Glide.with(activity)
-//                    .load(message.senderPhotoUri)
-//                    .placeholder(placeholder)
-//                    .apply(options)
-//                    .apply(RequestOptions.circleCropTransform())
-//                    .into(threadMessageSenderPhoto)
-//            }
         }
     }
 

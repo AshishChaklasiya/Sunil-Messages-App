@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.smsnew.messenger.commonsLibCustom.extensions.appLockManager
 
-open class RightApp : Application() {
+open class MainApplication : Application() {
 
     open val isAppLockFeatureAvailable = false
 

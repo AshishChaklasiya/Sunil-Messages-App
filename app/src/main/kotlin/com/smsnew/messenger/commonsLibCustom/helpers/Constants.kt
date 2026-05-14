@@ -320,42 +320,7 @@ const val TWITTER = "twitter"
 const val LINKEDIN = "linkedin"
 const val MAX = "max"
 
-// licenses
-internal const val LICENSE_KOTLIN = 1L
-const val LICENSE_SUBSAMPLING = 2L
-const val LICENSE_GLIDE = 4L
-const val LICENSE_CROPPER = 8L
-const val LICENSE_FILTERS = 16L
-const val LICENSE_RTL = 32L
-const val LICENSE_JODA = 64L
-const val LICENSE_STETHO = 128L
-const val LICENSE_OTTO = 256L
-const val LICENSE_PHOTOVIEW = 512L
-const val LICENSE_PICASSO = 1024L
-const val LICENSE_PATTERN = 2048L
-const val LICENSE_REPRINT = 4096L
-const val LICENSE_GIF_DRAWABLE = 8192L
-const val LICENSE_AUTOFITTEXTVIEW = 16384L
-const val LICENSE_ROBOLECTRIC = 32768L
-const val LICENSE_ESPRESSO = 65536L
-const val LICENSE_GSON = 131072L
-const val LICENSE_LEAK_CANARY = 262144L
-const val LICENSE_NUMBER_PICKER = 524288L
-const val LICENSE_EXOPLAYER = 1048576L
-const val LICENSE_PANORAMA_VIEW = 2097152L
-const val LICENSE_SANSELAN = 4194304L
-const val LICENSE_GESTURE_VIEWS = 8388608L
-const val LICENSE_INDICATOR_FAST_SCROLL = 16777216L
-const val LICENSE_EVENT_BUS = 33554432L
-const val LICENSE_AUDIO_RECORD_VIEW = 67108864L
-const val LICENSE_SMS_MMS = 134217728L
-const val LICENSE_APNG = 268435456L
-const val LICENSE_PDF_VIEW_PAGER = 536870912L
-const val LICENSE_M3U_PARSER = 1073741824L
-const val LICENSE_ANDROID_LAME = 2147483648L
-const val LICENSE_PDF_VIEWER = 4294967296L
-const val LICENSE_ZIP4J = 8589934592L
-const val LICENSE_EVALEX = 17179869184L
+
 
 // global intents
 const val OPEN_DOCUMENT_TREE_FOR_ANDROID_DATA_OR_OBB = 1000
@@ -470,15 +435,6 @@ const val SIDELOADING_UNCHECKED = 0
 const val SIDELOADING_TRUE = 1
 const val SIDELOADING_FALSE = 2
 
-// default tabs
-const val TAB_LAST_USED = 0
-const val TAB_CONTACTS = 1
-const val TAB_FAVORITES = 2
-const val TAB_CALL_HISTORY = 4
-const val TAB_GROUPS = 8
-const val TAB_FILES = 16
-const val TAB_RECENT_FILES = 32
-const val TAB_STORAGE_ANALYSIS = 64
 
 val photoExtensions: Array<String>
     get() = arrayOf(
@@ -635,15 +591,15 @@ val letterBackgroundColorsAndroid = arrayListOf( // Android
 )
 
 val letterBackgroundColorsArc = arrayListOf( // Arc
-    0xFF6DBAD9,
-    0xFF666789,
-    0xFFC5C6E5,
-    0xFFA6729E,
-    0xFFF29BBB,
-    0xFFF25E6B,
-    0xFFFF8558,
-    0xFFF8D558,
-    0xFF34E895
+    0xFFA5B4FC,
+    0xFF67E8F9,
+    0xFF6EE7B7,
+    0xFFA7F3D0,
+    0xFF93C5FD,
+    0xFFFDE68A,
+    0xFFFDBA74,
+    0xFFF9A8D4,
+    0xFFD8B4FE
 )
 
 val letterBackgroundColorsIOS = arrayListOf( // iOS

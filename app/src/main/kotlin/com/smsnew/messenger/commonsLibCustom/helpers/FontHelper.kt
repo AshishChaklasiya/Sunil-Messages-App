@@ -2,6 +2,8 @@ package com.smsnew.messenger.commonsLibCustom.helpers
 
 import android.content.Context
 import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
+import com.smsnew.messenger.R
 import com.smsnew.messenger.commonsLibCustom.extensions.baseConfig
 import com.smsnew.messenger.commonsLibCustom.extensions.ensureFontPresentLocally
 import com.smsnew.messenger.commonsLibCustom.extensions.isCredentialStorageAvailable
@@ -38,14 +40,22 @@ object FontHelper {
     }
 
     private fun loadCustomFont(context: Context, fileName: String): Typeface {
-        if (fileName.isEmpty()) return Typeface.DEFAULT
+        if (fileName.isEmpty()) return loadBundledInter(context)
         val fontFile = File(getFontsDir(context), fileName)
         if (!fontFile.exists()) {
             context.ensureFontPresentLocally(fileName)
         }
 
         return try {
-            if (fontFile.exists()) Typeface.createFromFile(fontFile) else Typeface.DEFAULT
+            if (fontFile.exists()) Typeface.createFromFile(fontFile) else loadBundledInter(context)
+        } catch (_: Exception) {
+            loadBundledInter(context)
+        }
+    }
+
+    private fun loadBundledInter(context: Context): Typeface {
+        return try {
+            ResourcesCompat.getFont(context, R.font.inter_24pt_regular) ?: Typeface.DEFAULT
         } catch (_: Exception) {
             Typeface.DEFAULT
         }

@@ -23,7 +23,6 @@ import com.smsnew.messenger.R
 import com.smsnew.messenger.adapters.ConversationsAdapter
 import com.smsnew.messenger.adapters.SearchResultsAdapter
 import com.smsnew.messenger.commonsLibCustom.activities.ManageBlockedNumbersActivity
-import com.smsnew.messenger.commonsLibCustom.dialogs.ConfirmationAdvancedDialog
 import com.smsnew.messenger.commonsLibCustom.dialogs.PermissionRequiredDialog
 import com.smsnew.messenger.commonsLibCustom.extensions.*
 import com.smsnew.messenger.commonsLibCustom.helpers.*
@@ -370,10 +369,7 @@ class MainActivity : SimpleActivity() {
         applyDrawerColors()
     }
 
-    /** Re-tints the drawer (background, header, item text + icons, switch) to
-     *  match the current app theme, and ensures the toggle switch is wired up.
-     *  Called from setupNavigationDrawer() and from onResume() via
-     *  updateMenuColors() so it follows theme changes. */
+
     private fun applyDrawerColors() {
         val backgroundColor = getProperBackgroundColor()
         val textColor = getProperTextColor()
@@ -547,67 +543,29 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun loadMessages() {
-//        if (!config.wasReminderWarningShown) {
-//            ConfirmationAdvancedDialog(
-//                activity = this,
-//                messageId = R.string.warning_disclosure,
-//                fromHtml = true,
-//                positive = R.string.agree,
-//                negative = R.string.disagree
-//            ) {
-//                if (it) {
-//                    config.wasReminderWarningShown = true
-//
-//                    if (isQPlus()) {
-//                        val roleManager = getSystemService(RoleManager::class.java)
-//                        if (roleManager!!.isRoleAvailable(RoleManager.ROLE_SMS)) {
-//                            if (roleManager.isRoleHeld(RoleManager.ROLE_SMS)) {
-//                                askPermissions()
-//                            } else {
-//                                val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS)
-//                                startActivityForResult(intent, MAKE_DEFAULT_APP_REQUEST)
-//                            }
-//                        } else {
-//                            toast(R.string.unknown_error_occurred)
-//                            finish()
-//                        }
-//                    } else {
-//                        if (Telephony.Sms.getDefaultSmsPackage(this) == packageName) {
-//                            askPermissions()
-//                        } else {
-//                            val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
-//                            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
-//                            startActivityForResult(intent, MAKE_DEFAULT_APP_REQUEST)
-//                        }
-//                    }
-//                } else {
-//                    finish()
-//                }
-//            }
-//        } else {
-            if (isQPlus()) {
-                val roleManager = getSystemService(RoleManager::class.java)
-                if (roleManager!!.isRoleAvailable(RoleManager.ROLE_SMS)) {
-                    if (roleManager.isRoleHeld(RoleManager.ROLE_SMS)) {
-                        askPermissions()
-                    } else {
-                        val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS)
-                        startActivityForResult(intent, MAKE_DEFAULT_APP_REQUEST)
-                    }
-                } else {
-                    toast(R.string.unknown_error_occurred)
-                    finish()
-                }
-            } else {
-                if (Telephony.Sms.getDefaultSmsPackage(this) == packageName) {
+
+        if (isQPlus()) {
+            val roleManager = getSystemService(RoleManager::class.java)
+            if (roleManager!!.isRoleAvailable(RoleManager.ROLE_SMS)) {
+                if (roleManager.isRoleHeld(RoleManager.ROLE_SMS)) {
                     askPermissions()
                 } else {
-                    val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
-                    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+                    val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_SMS)
                     startActivityForResult(intent, MAKE_DEFAULT_APP_REQUEST)
                 }
+            } else {
+                toast(R.string.unknown_error_occurred)
+                finish()
             }
-//        }
+        } else {
+            if (Telephony.Sms.getDefaultSmsPackage(this) == packageName) {
+                askPermissions()
+            } else {
+                val intent = Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT)
+                intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, packageName)
+                startActivityForResult(intent, MAKE_DEFAULT_APP_REQUEST)
+            }
+        }
     }
 
     // while SEND_SMS and READ_SMS permissions are mandatory, READ_CONTACTS is optional.

@@ -58,13 +58,14 @@
     <color name="red_missed">#FFEB5545</color>
 
     <!-- My Customization -->
-    <color name="primary">#FF5589F1</color> <!-- -11171343-->
+    <color name="primary">#2563EB</color> <!-- -11171343-->
     <color name="dialog_background_color">#03FFFFFF</color>
 
     <!-- Default values -->
     <color name="default_text_color">@color/theme_light_text_color</color>
     <color name="default_background_color">@color/theme_light_background_color</color>
     <color name="default_primary_color">@color/color_primary</color>
+    <color name="cursor_color">#111827</color>
     <color name="default_accent_color">@color/color_accent</color>
     <color name="default_widget_bg_color">#FFFFFFFF</color>
     <color name="default_widget_text_color">@color/theme_light_text_color</color>

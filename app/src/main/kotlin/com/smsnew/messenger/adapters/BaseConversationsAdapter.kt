@@ -208,7 +208,7 @@ abstract class BaseConversationsAdapter(
 
             conversationDate.apply {
                 text = formatConversationDate(conversation.date)
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize * 0.8f)
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
             }
 
             val isUnread = !conversation.read
@@ -227,12 +227,10 @@ abstract class BaseConversationsAdapter(
 
             if (conversation.isBlocked) {
                 val colorRed = resources.getColor(R.color.red_call, activity.theme)
-                conversationChevron.applyColorFilter(colorRed)
                 arrayListOf(conversationAddress, conversationBodyShort, conversationDate).forEach {
                     it.setTextColor(colorRed)
                 }
             } else {
-                conversationChevron.applyColorFilter(textColor)
                 arrayListOf(conversationAddress, conversationBodyShort, conversationDate).forEach {
                     it.setTextColor(textColor)
                 }

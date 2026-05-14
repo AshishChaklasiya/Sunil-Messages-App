@@ -2259,31 +2259,6 @@ class ThreadActivity : SimpleActivity() {
         getColoredMaterialStatusBarColor()
     }
 
-    fun setupMessagingEdgeToEdge() {
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding.messageHolder.threadTypeMessage
-        ) { view, insets ->
-            val type = WindowInsetsCompat.Type.ime()
-            val isKeyboardVisible = insets.isVisible(type)
-            if (isKeyboardVisible) {
-                val keyboardHeight = insets.getInsets(type).bottom
-                val bottomBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
-
-                // check keyboard height just to be sure, 150 seems like a good middle ground between ime and navigation bar
-                config.keyboardHeight = if (keyboardHeight > 150) {
-                    keyboardHeight - bottomBarHeight
-                } else {
-                    getDefaultKeyboardHeight()
-                }
-                hideAttachmentPicker()
-            } else if (isAttachmentPickerVisible) {
-                showAttachmentPicker()
-            }
-
-            insets
-        }
-    }
-
     companion object {
         private const val TYPE_EDIT = 14
         private const val TYPE_SEND = 15

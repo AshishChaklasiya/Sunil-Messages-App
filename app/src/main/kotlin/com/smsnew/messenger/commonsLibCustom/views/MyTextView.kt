@@ -3,9 +3,10 @@ package com.smsnew.messenger.commonsLibCustom.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import com.smsnew.messenger.commonsLibCustom.extensions.applyFontToTextView
 
-open class MyTextView : TextView {
+open class MyTextView : AppCompatTextView {
     constructor(context: Context) : super(context) {
         init()
     }
